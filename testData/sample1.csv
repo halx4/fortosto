@@ -1,0 +1,4 @@
+date,Date,location,total_distributed,total_vaccinations,distributed_per_hundred,total_vaccinations_per_hundred,people_vaccinated,people_vaccinated_per_hundred,people_fully_vaccinated,people_fully_vaccinated_per_hundred,daily_vaccinations_raw,daily_vaccinations,daily_vaccinations_per_million,share_doses_used
+2021-01-12,12/01/21,Alabama, ,78134.0,7,1.59,70861.0,1.44,7270.0,0.15,,,,0.207
+2021-01-14,14/01/21,Alabama,435350.0,92300.0,135,1.88,80480.0,1.64,,,8260.0,7083.0,1445.0,0.212
+2021-01-16,16/01/21,Alabama,,,,,,,,,7557.0,7498.0,1529.0,

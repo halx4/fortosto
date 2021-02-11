@@ -1,0 +1,2 @@
+class UnableToSaveException(Exception):
+    pass
