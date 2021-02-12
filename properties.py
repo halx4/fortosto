@@ -10,7 +10,6 @@ class Properties:
     logLevel = logging.DEBUG
     dependenciesLogLevel = logging.WARN
 
-    delimiter = ','
     fileEncoding = "utf-8-sig"
 
     #####
@@ -22,6 +21,7 @@ class Properties:
     port = ''
     filename = ''
     table = ''
+    delimiter = ','
 
 
 if Properties.developmentMode:

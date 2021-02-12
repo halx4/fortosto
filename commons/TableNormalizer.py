@@ -22,6 +22,11 @@ class TableNormalizer(object):
 
     @staticmethod
     def normalizeHeaders(headersOriginal: list):
+        '''
+
+        :param headersOriginal:
+        :return:
+        '''
         headers = headersOriginal.copy()
         # iterate headers with index
         for i in range(len(headers)):
@@ -38,13 +43,19 @@ class TableNormalizer(object):
         return headers
 
     @staticmethod
-    def getDedupedHeaderName(normalizedHeader: str, otherHeaders: list) -> str:
-        if (normalizedHeader not in otherHeaders):
-            return normalizedHeader
+    def getDedupedHeaderName(header: str, otherHeaders: list) -> str:
+        '''
+
+        :param header:
+        :param otherHeaders: the list of headers to dedup against
+        :return:
+        '''
+        if (header not in otherHeaders):
+            return header
         else:
             counter = 1
             while True:
-                if f"{normalizedHeader}_{str(counter)}" in otherHeaders:
+                if f"{header}_{str(counter)}" in otherHeaders:
                     counter += 1
                 else:
-                    return f"{normalizedHeader}_{str(counter)}"
+                    return f"{header}_{str(counter)}"
