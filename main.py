@@ -29,6 +29,34 @@ def main():
         log.error("Db error: " + str(e))
         exit(1)
 
+    ## best effort casting of columns (except the id column)
+    for header in newHeaders:
+        tryCasting(dao,header)
+
+def tryCasting(dao, header: str):
+    log.debug(f"attempting cast column {header}")
+    ### integer
+    try:
+        log.debug("> casting to  Integer...")
+        dao.castColumnToInteger(Properties.schema, Properties.table, header)
+        log.debug("> casting to  Integer succeeded")
+        return
+    except Exception as e:
+        log.debug("> casting to  Integer failed")
+        print(e)
+
+    ### double
+    try:
+        log.debug("> casting to  Float...")
+        dao.castColumnToFloat(Properties.schema, Properties.table, header)
+        log.debug("> casting to  Float succeeded")
+        return
+    except Exception as e:
+        log.debug("> casting to  Float failed")
+        print(e)
+
+    ### date
+
 
 def getCsvDataFromLocalFile(filePath: str) -> tuple:
     # get the headers as list

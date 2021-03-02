@@ -1,3 +1,18 @@
+def getCastColumnToIntegerQuery(schema: str, table: str, column: str) -> str:
+    query = f"""
+    ALTER TABLE  {schema}.{table}
+    ALTER COLUMN {column} TYPE INTEGER USING NULLIF({column}, '')::integer
+    """
+    return query
+
+def getCastColumnToFloatQuery(schema: str, table: str, column: str) -> str:
+    query = f"""
+    ALTER TABLE  {schema}.{table}
+    ALTER COLUMN {column} TYPE FLOAT USING NULLIF({column}, '')::float
+    """
+    return query
+
+
 def getCreateTableQuery(schema: str, table: str, columns: list) -> str:
     query = f"""CREATE TABLE {schema}.{table}
 (
