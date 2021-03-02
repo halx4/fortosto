@@ -6,6 +6,7 @@ import psycopg2
 
 from commons.CastDataType import CastDataType
 from commons.TableNormalizer import TableNormalizer
+from commons.castingUtils import tryCastingHeaders
 from commons.dao import DAO
 from properties import Properties
 from initializer import initialize
@@ -34,46 +35,6 @@ def main():
 
     ## casting attempt of columns (except the id column)
     tryCastingHeaders(dao, newHeaders)
-
-
-def tryCastingHeaders(dao: DAO, columns: list):
-    castResults = dict()
-    for header in columns:
-        castResult = tryCastingColumn(dao, header)
-        if castResult is not None:
-            castResults[header] = str(castResult.name)
-
-    log.info('conversions made:')
-    log.info(castResults)
-    return castResults
-
-
-def tryCastingColumn(dao: DAO, header: str) -> CastDataType:
-    log.debug(f"attempting cast column {header}")
-    ### integer
-    try:
-        log.debug("> casting to  Integer...")
-        dao.castColumnToInteger(Properties.schema, Properties.table, header)
-        log.debug("> casting to  Integer succeeded")
-        return CastDataType.Integer
-    except Exception as e:
-        log.debug("> casting to  Integer failed")
-        print(e)
-
-    ### double
-    try:
-        log.debug("> casting to  Float...")
-        dao.castColumnToFloat(Properties.schema, Properties.table, header)
-        log.debug("> casting to  Float succeeded")
-        return CastDataType.Double
-    except Exception as e:
-        log.debug("> casting to  Float failed")
-        print(e)
-
-    ### date
-    # TODO
-
-    return None
 
 
 def getCsvDataFromLocalFile(filePath: str) -> tuple:
