@@ -1,1 +1,2 @@
-w
+class UnexpectedValueException(Exception):
+    pass
