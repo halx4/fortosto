@@ -1,7 +1,10 @@
+from __future__ import annotations
+
 import csv
 
 import psycopg2
 
+from commons.CastDataType import CastDataType
 from commons.TableNormalizer import TableNormalizer
 from commons.dao import DAO
 from properties import Properties
@@ -29,18 +32,30 @@ def main():
         log.error("Db error: " + str(e))
         exit(1)
 
-    ## best effort casting of columns (except the id column)
-    for header in newHeaders:
-        tryCasting(dao,header)
+    ## casting attempt of columns (except the id column)
+    tryCastingHeaders(dao, newHeaders)
 
-def tryCasting(dao, header: str):
+
+def tryCastingHeaders(dao: DAO, columns: list):
+    castResults = dict()
+    for header in columns:
+        castResult = tryCastingColumn(dao, header)
+        if castResult is not None:
+            castResults[header] = str(castResult.name)
+
+    log.info('conversions made:')
+    log.info(castResults)
+    return castResults
+
+
+def tryCastingColumn(dao: DAO, header: str) -> CastDataType:
     log.debug(f"attempting cast column {header}")
     ### integer
     try:
         log.debug("> casting to  Integer...")
         dao.castColumnToInteger(Properties.schema, Properties.table, header)
         log.debug("> casting to  Integer succeeded")
-        return
+        return CastDataType.Integer
     except Exception as e:
         log.debug("> casting to  Integer failed")
         print(e)
@@ -50,12 +65,15 @@ def tryCasting(dao, header: str):
         log.debug("> casting to  Float...")
         dao.castColumnToFloat(Properties.schema, Properties.table, header)
         log.debug("> casting to  Float succeeded")
-        return
+        return CastDataType.Double
     except Exception as e:
         log.debug("> casting to  Float failed")
         print(e)
 
     ### date
+    # TODO
+
+    return None
 
 
 def getCsvDataFromLocalFile(filePath: str) -> tuple:
