@@ -1,7 +1,8 @@
 from psycopg2._psycopg import AsIs
 
+from commons.PostgresCastException import PostgresCastException
 from commons.UnableToSaveException import UnableToSaveException
-from commons.sqlTemplates import getCreateTableQuery
+from commons.sqlTemplates import getCreateTableQuery, getCastColumnToIntegerQuery, getCastColumnToFloatQuery
 from properties import Properties
 import psycopg2
 import psycopg2.extras
@@ -39,6 +40,49 @@ class DAO(object):
 
     #################################################################
 
+    def getTablesOfSchema(self, schema: str):
+        cur = self.conn.cursor()
+        self.execute(cur, f"SELECT table_name FROM information_schema.tables WHERE table_schema = '{schema}'")
+        self.conn.commit()
+        rawResult = cur.fetchall()
+        result = [x[0] for x in rawResult]
+        return result
+
+    #################################################################
+
+    def schemaExists(self, schema: str):
+        cur = self.conn.cursor()
+        self.execute(cur, f"SELECT EXISTS(SELECT 1 FROM information_schema.schemata WHERE schema_name = '{schema}');")
+        self.conn.commit()
+        (result,) = cur.fetchone()
+        return result
+
+    #################################################################
+
+    def castColumnToFloat(self, schema: str, tableName: str, column: str):
+        sql = getCastColumnToFloatQuery(schema, tableName, column)
+        cur = self.conn.cursor()
+        try:
+            self.execute(cur, sql)
+            self.conn.commit()
+        except Exception as e:
+            self.conn.rollback()
+            raise PostgresCastException() from e
+
+    #################################################################
+
+    def castColumnToInteger(self, schema: str, tableName: str, column: str):
+        sql = getCastColumnToIntegerQuery(schema, tableName, column)
+        cur = self.conn.cursor()
+        try:
+            self.execute(cur, sql)
+            self.conn.commit()
+        except Exception as e:
+            self.conn.rollback()
+            raise PostgresCastException() from e
+
+    #################################################################
+
     def createVarCharTable(self, schema: str, tableName: str, columns: list):
         sql = getCreateTableQuery(schema, tableName, columns)
         cur = self.conn.cursor()
@@ -46,16 +90,15 @@ class DAO(object):
         self.conn.commit()
 
     #################################################################
-    # UPDATED
+
     def saveRecordsToDb(self, schema: str, table: str, recordsAsList: list):
         return self.insertValues(schema, table, recordsAsList)
 
     #################################################################
-
     #################################################################
 
     # PRIVATE METHODS
-    def insertValues(self,schema, tableName, recordsAsList):
+    def insertValues(self, schema, tableName, recordsAsList):
         """raises UnableToSaveException
         """
 
