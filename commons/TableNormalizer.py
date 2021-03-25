@@ -28,6 +28,8 @@ class TableNormalizer(object):
         :return:
         '''
         headers = headersOriginal.copy()
+        currentlyNormalisedHeaders=set()
+
         # iterate headers with index
         for i in range(len(headers)):
             header = headers[i]
@@ -35,15 +37,14 @@ class TableNormalizer(object):
             normalizedHeader = StringsNormalizer.normalizePgColumnName(header)
             log.debug("normalized header: " + normalizedHeader)
 
-            otherHeaders = headers[:i]
-
-            dedupedNormalizedHeader = TableNormalizer.getDedupedHeaderName(normalizedHeader, otherHeaders)
+            dedupedNormalizedHeader = TableNormalizer.getDedupedHeaderName(normalizedHeader, currentlyNormalisedHeaders)
 
             headers[i] = dedupedNormalizedHeader
+            currentlyNormalisedHeaders.add(dedupedNormalizedHeader)
         return headers
 
     @staticmethod
-    def getDedupedHeaderName(header: str, otherHeaders: list) -> str:
+    def getDedupedHeaderName(header: str, otherHeaders: set) -> str:
         '''
 
         :param header:
