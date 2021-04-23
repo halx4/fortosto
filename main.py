@@ -14,7 +14,7 @@ from commons.loggingUtils import getRootLogger
 
 log = getRootLogger()
 
-batchSize = 30000
+batchSize = Properties.batchSize
 
 
 def main():
