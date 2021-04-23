@@ -30,7 +30,6 @@ def tryCastingColumn(dao: DAO, header: str) -> CastDataType:
         return CastDataType.Integer
     except Exception as e:
         log.debug("> casting to  Integer failed")
-        print(e)
 
     ### double
     try:
@@ -40,7 +39,6 @@ def tryCastingColumn(dao: DAO, header: str) -> CastDataType:
         return CastDataType.Double
     except Exception as e:
         log.debug("> casting to  Float failed")
-        print(e)
 
     ### date
     # TODO
