@@ -28,7 +28,13 @@ def main():
     newHeaders = TableNormalizer.normalizeHeaders(headers)
     log.debug(f"normalised headers: {newHeaders}")
 
+
+
     try:
+        if Properties.dropTableIfExists:
+            log.debug(f"dropping table: {Properties.table}")
+            dao.dropTable(Properties.schema, Properties.table)
+
         dao.createVarCharTable(Properties.schema, Properties.table, newHeaders)
     except psycopg2.DatabaseError as e:
         log.error("Db error: " + str(e))

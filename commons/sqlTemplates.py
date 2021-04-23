@@ -5,6 +5,7 @@ def getCastColumnToIntegerQuery(schema: str, table: str, column: str) -> str:
     """
     return query
 
+
 def getCastColumnToFloatQuery(schema: str, table: str, column: str) -> str:
     query = f"""
     ALTER TABLE  {schema}.{table}
@@ -24,5 +25,12 @@ def getCreateTableQuery(schema: str, table: str, columns: list) -> str:
     query += f"""CONSTRAINT {table}_pkey PRIMARY KEY (id)
 );
 """
+
+    return query
+
+
+def getDropTableQuery(schema: str, table: str, ifExists: bool) -> str:
+    ifExistsString = 'IF EXISTS ' if ifExists else ''
+    query = f'DROP TABLE {ifExistsString}{schema}."{table}"'
 
     return query

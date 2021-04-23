@@ -18,6 +18,7 @@ def initialize():
     parser.add_argument('-p', '--password', type=str, help="Db password", default=os.environ.get("P2C_PASSWORD", ""), required=False)
     parser.add_argument('-t', '--table', type=str, help="table name (must match [a-z0-9_]* )(default: the filename lowercased and normalised)", default=os.environ.get("P2C_TABLE", ""), required=False)
     parser.add_argument('-D', '--delimiter', type=str, help="delimiter (default: ',')",default=os.environ.get("P2C_DELIMITER", ","), required=False)
+    parser.add_argument('--drop-if-exists', help="drop table if it already exists",action='store_true', required=False)
 
     args = parser.parse_args()
 
@@ -35,6 +36,7 @@ def initialize():
         Properties.table = os.path.splitext(ntpath.basename(args.filename.lower()))[0]
 
     Properties.delimiter = args.delimiter
+    Properties.dropTableIfExists = args.drop_if_exists
 
     log.debug(f"""
     schema=\t\t{Properties.schema}
@@ -46,8 +48,9 @@ def initialize():
     filename=\t{Properties.filename}
     table=\t\t{Properties.table}
     delimiter=\t{Properties.delimiter}
+    drop-if-exists=\t{Properties.dropTableIfExists}
     """)
-
+    return
 
 if __name__ == '__main__':
     initialize()

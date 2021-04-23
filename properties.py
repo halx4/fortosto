@@ -22,9 +22,10 @@ class Properties:
     filename = ''
     table = ''
     delimiter = ','
-
+    dropTableIfExists = False  # this is not a default value. It will always be replaced by the initializer
 
     batchSize = 30000
+
 
 if Properties.developmentMode:
     print("#######################")

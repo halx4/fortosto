@@ -2,7 +2,8 @@ from psycopg2._psycopg import AsIs
 
 from commons.PostgresCastException import PostgresCastException
 from commons.UnableToSaveException import UnableToSaveException
-from commons.sqlTemplates import getCreateTableQuery, getCastColumnToIntegerQuery, getCastColumnToFloatQuery
+from commons.sqlTemplates import getCreateTableQuery, getCastColumnToIntegerQuery, getCastColumnToFloatQuery, \
+    getDropTableQuery
 from properties import Properties
 import psycopg2
 import psycopg2.extras
@@ -85,6 +86,14 @@ class DAO(object):
 
     def createVarCharTable(self, schema: str, tableName: str, columns: list):
         sql = getCreateTableQuery(schema, tableName, columns)
+        cur = self.conn.cursor()
+        self.execute(cur, sql)
+        self.conn.commit()
+
+    #################################################################
+
+    def dropTable(self, schema: str, tableName: str):
+        sql = getDropTableQuery(schema, tableName, ifExists=True)
         cur = self.conn.cursor()
         self.execute(cur, sql)
         self.conn.commit()
