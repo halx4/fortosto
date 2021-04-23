@@ -8,6 +8,18 @@ log = getRootLogger()
 class TableNormalizer(object):
 
     @staticmethod
+    def normalizeRecords(originalHeaders: list, newHeaders: list, records: list) -> list:
+        newRecords = list()
+
+        for oldRecord in records:  # each record is a dictionary. create a new dictionary with the new headers as keys
+            newRecord = dict()
+            for i in range(len(originalHeaders)):
+                newRecord[newHeaders[i]] = oldRecord[originalHeaders[i]]
+            newRecords.append(newRecord)
+
+        return newRecords
+
+    @staticmethod
     def normalizeHeadersForTable(originalHeaders: list, records: list) -> tuple:
         newHeaders = TableNormalizer.normalizeHeaders(originalHeaders)
         newRecords = list()
@@ -28,7 +40,7 @@ class TableNormalizer(object):
         :return:
         '''
         headers = headersOriginal.copy()
-        currentlyNormalisedHeaders=set()
+        currentlyNormalisedHeaders = set()
 
         # iterate headers with index
         for i in range(len(headers)):

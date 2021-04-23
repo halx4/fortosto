@@ -25,12 +25,23 @@ class Test(unittest.TestCase):
         result = StringsNormalizer.normalizePgColumnName(input)
         self.assertEqual(result, expected)
 
-
-
     def test_unidecode(self):
-        specialChars=['Ç','ü','é','â','ä','à','å','ç','ê','ë','è','ï','î','ì','æ','Æ','ô','ö','ò','û','ù','ÿ','¢','£','¥','P','ƒ','á','í','ó','ú','ñ','Ñ','‡','‡','¿','¬','½','¼','¡','«','»','¦','ß','µ','±','°','•','·','²','€','„','…','†','‡','ˆ','‰','Š','‹','Œ','‘','’','“','”','–','—','˜','™','š','›','œ','Ÿ','¨','©','®','¯','³','´','¸','¹','¾','À','Á','Â','Ã','Ä','Å','È','É','Ê','Ë','Ì','Í','Î','Ï','Ð','Ò','Ó','Ô','Õ','Ö','×','Ø','Ù','Ú','Û','Ü','Ý','Þ','ã','ð','õ','÷','ø','ü','ý','þ']
+        import string
+        normalisedCharSet = string.ascii_letters + string.digits + string.punctuation + ' '  # space character is included in the set
+        print(f"normalisedCharSet: {normalisedCharSet}")
+        normalisedCharSet = set(normalisedCharSet)
+
+        specialChars = ['Ç', 'ü', 'é', 'â', 'ä', 'à', 'å', 'ç', 'ê', 'ë', 'è', 'ï', 'î', 'ì', 'æ', 'Æ', 'ô', 'ö', 'ò',
+                        'û', 'ù', 'ÿ', '¢', '£', '¥', 'P', 'ƒ', 'á', 'í', 'ó', 'ú', 'ñ', 'Ñ', '‡', '‡', '¿', '¬', '½',
+                        '¼', '¡', '«', '»', '¦', 'ß', 'µ', '±', '°', '•', '·', '²', '€', '„', '…', '†', '‡', 'ˆ', '‰',
+                        'Š', '‹', 'Œ', '‘', '’', '“', '”', '–', '—', '˜', '™', 'š', '›', 'œ', 'Ÿ', '¨', '©', '®', '¯',
+                        '³', '´', '¸', '¹', '¾', 'À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï',
+                        'Ð', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', '×', 'Ø', 'Ù', 'Ú', 'Û', 'Ü', 'Ý', 'Þ', 'ã', 'ð', 'õ', '÷', 'ø',
+                        'ü', 'ý', 'þ']
         for ch in specialChars:
-            print (ch+" -> "+unidecode(ch))
+            unidecoded = unidecode(ch)
+            print(ch + " -> " + unidecoded)
+            self.assertTrue(set(unidecoded).issubset(normalisedCharSet))
 
 
 if __name__ == '__main__':

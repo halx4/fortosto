@@ -24,6 +24,8 @@ class Properties:
     delimiter = ','
 
 
+    batchSize = 30000
+
 if Properties.developmentMode:
     print("#######################")
     print("####### DEV MODE ######")
