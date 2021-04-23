@@ -20,7 +20,7 @@ def tryCastingHeaders(dao: DAO, columns: list):
     return castResults
 
 
-def tryCastingColumn(dao: DAO, header: str) -> CastDataType:
+def tryCastingColumn(dao: DAO, header: str) -> CastDataType|None:
     log.debug(f"attempting cast column {header}")
     ### integer
     try:
