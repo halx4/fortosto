@@ -56,8 +56,9 @@ def main():
                 log.error("Db error: " + str(e))
                 exit(1)
 
-    ## casting attempt of columns (except the id column)
-    tryCastingHeaders(dao, newHeaders)
+    if(Properties.castNumbers):
+        ## casting attempt of columns (except the id column)
+        tryCastingHeaders(dao, newHeaders)
 
 
 def getNextBatch(csvReader) -> tuple:

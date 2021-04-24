@@ -21,6 +21,7 @@ def initialize():
     parser.add_argument('-t', '--table', type=str, help="table name (must match [a-z0-9_]* )(default: the filename lowercased and normalised)", default=os.environ.get("P2C_TABLE", ""), required=False)
     parser.add_argument('-D', '--delimiter', type=str, help="delimiter (default: ',')", default=os.environ.get("P2C_DELIMITER", ","), required=False)
     parser.add_argument('--drop-if-exists', help="drop table if it already exists", action='store_true', required=False)
+    parser.add_argument('--cast-numbers', help="try casting number columns after importing", action='store_true', required=False)
     parser.add_argument('-v', '--version', help="print version info", action='version', version=f'P2G v.{Properties.applicationVersion}')
     # verbose
     # dry run
@@ -44,6 +45,7 @@ def initialize():
 
     Properties.delimiter = args.delimiter
     Properties.dropTableIfExists = args.drop_if_exists
+    Properties.castNumbers = args.cast_numbers
 
     log.debug(f"""
     schema=\t\t{Properties.schema}
@@ -56,6 +58,7 @@ def initialize():
     table=\t\t{Properties.table}
     delimiter=\t{Properties.delimiter}
     drop-if-exists=\t{Properties.dropTableIfExists}
+    castNumbers=\t{Properties.castNumbers}
     """)
     return
 
