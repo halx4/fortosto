@@ -45,6 +45,10 @@ def main():
 
     if os.path.isdir(target):
         log.debug("It is a directory")
+
+        # add a trailing dash to the folder path if it doesnt have one
+        target = target + "/" if not target.endswith("/") else target
+
         filenamePattern = f'{target}{Properties.filenamePattern}'
         log.info(f"filenamePattern= {filenamePattern}")
         targetsFilenames = sorted(glob.glob(filenamePattern, recursive=True))
