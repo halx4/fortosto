@@ -14,7 +14,7 @@ def initialize():
     #@formatter:off
     parser = argparse.ArgumentParser(description='Imports csv data to Postgres DB',formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-    parser.add_argument('-f', '--filename', type=str, help="CSV File name(default: lowercased file name)", required=True)
+    parser.add_argument('-f', '--target', type=str, help="target file name (default: lowercased file name)", required=True)
     parser.add_argument('-s', '--schema', type=str, help="The schema name", default=os.environ.get("P2C_SCHEMA","public"), required=False)
     parser.add_argument('-d', '--database', type=str, help="The db name", default=os.environ.get("P2C_DB", "postgres"), required=False)
     parser.add_argument('-H', '--host', type=str, help="Db Host", default=os.environ.get("P2C_HOST", "localhost"), required=False)
@@ -40,7 +40,7 @@ def initialize():
 
     args = parser.parse_args()
 
-    Properties.filename = args.filename
+    Properties.target = args.target
     Properties.schema = args.schema
     Properties.dbname = args.database
     Properties.host = args.host
@@ -61,20 +61,21 @@ def initialize():
     Properties.verboseLogging = args.verbose
 
     log.debug(f"""
-    schema=\t\t{Properties.schema}
-    dbname=\t\t{Properties.dbname}
-    user=\t\t{Properties.user}
-    password=\t{Properties.password}
-    host=\t\t{Properties.host}
-    port=\t\t{Properties.port}
-    filename=\t{Properties.filename}
-    [prefix]table=\t\t{Properties.tableNamePrefix}{Properties.table}
-    delimiter=\t{Properties.delimiter}
+    schema=\t\t\t\t{Properties.schema}
+    dbname=\t\t\t\t{Properties.dbname}
+    user=\t\t\t\t{Properties.user}
+    host=\t\t\t\t{Properties.host}
+    port=\t\t\t\t{Properties.port}
+    target=\t\t\t\t{Properties.target}
     filenamePattern=\t{Properties.filenamePattern}
+    [prefix]table=\t\t{Properties.tableNamePrefix}{Properties.table}
+    delimiter=\t\t\t{Properties.delimiter}
     dropTableIfExists=\t{Properties.dropTableIfExists}
-    castNumbers=\t{Properties.castNumbers}
-    verboseLogging=\t{Properties.verboseLogging}
+    castNumbers=\t\t{Properties.castNumbers}
+    verboseLogging=\t\t{Properties.verboseLogging}
     """)
+
+    log.trace("password=\t\t{Properties.password}")
 
     # configure logging
     if Properties.verboseLogging:

@@ -36,7 +36,7 @@ def main():
     dao = DAO(Properties.developmentMode)
     log.info("DB connection established")
 
-    target = Properties.filename
+    target = Properties.target
     if path.exists(target):
         log.debug('target exists')
     else:

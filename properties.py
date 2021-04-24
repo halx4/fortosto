@@ -21,10 +21,10 @@ class Properties:
     password = ''
     host = ''
     port = ''
-    filename = ''
+    target = ''
     table = ''
     delimiter = ','
-    tableNamePrefix=''
+    tableNamePrefix = ''
 
     filenamePattern = ''
     dropTableIfExists = False  # this is not a default value. It will always be replaced by the initializer
