@@ -1,6 +1,7 @@
 from psycopg2._psycopg import AsIs
 
 from commons.PostgresCastException import PostgresCastException
+from commons.PostgresException import PostgresException
 from commons.UnableToSaveException import UnableToSaveException
 from commons.sqlTemplates import getCreateTableQuery, getCastColumnToIntegerQuery, getCastColumnToFloatQuery, \
     getDropTableQuery
@@ -63,24 +64,18 @@ class DAO(object):
     def castColumnToFloat(self, schema: str, tableName: str, column: str):
         sql = getCastColumnToFloatQuery(schema, tableName, column)
         cur = self.conn.cursor()
-        try:
-            self.execute(cur, sql)
-            self.conn.commit()
-        except Exception as e:
-            self.conn.rollback()
-            raise PostgresCastException() from e
+
+        self.execute(cur, sql)
+        self.conn.commit()
 
     #################################################################
 
     def castColumnToInteger(self, schema: str, tableName: str, column: str):
         sql = getCastColumnToIntegerQuery(schema, tableName, column)
         cur = self.conn.cursor()
-        try:
-            self.execute(cur, sql)
-            self.conn.commit()
-        except Exception as e:
-            self.conn.rollback()
-            raise PostgresCastException() from e
+
+        self.execute(cur, sql)
+        self.conn.commit()
 
     #################################################################
 
@@ -171,10 +166,18 @@ class DAO(object):
             log.warn("dry-run (dev mode) query: " + str(query))
             return None
         else:
-            return cur.execute(query, variables)
+            try:
+                return cur.execute(query, variables)
+            except Exception as e:
+                self.conn.rollback()
+                raise PostgresException() from e
 
     def executeValues(self, cur, query, argslist, template=None, page_size=100, fetch=False):
         if (self.developmentMode):
             log.warn("dry-run (dev mode) query: " + str(query))
             return None
-        return psycopg2.extras.execute_values(cur, query, argslist, template, page_size, fetch)
+        try:
+            return psycopg2.extras.execute_values(cur, query, argslist, template, page_size, fetch)
+        except Exception as e:
+            self.conn.rollback()
+            raise PostgresException() from e
