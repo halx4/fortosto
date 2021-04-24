@@ -124,7 +124,7 @@ class DAO(object):
                 values = tuple([t[1] for t in l])
                 recordsAsTuplesList.append(values)
 
-            insert = f'insert into {schema}.{tableName} ({columns}) values %s'
+            insert = f'insert into "{schema}"."{tableName}" ({columns}) values %s'
 
             cur = self.conn.cursor()
 
@@ -132,7 +132,7 @@ class DAO(object):
 
             self.conn.commit()
 
-    def insertValuesOnConflictUpdate(self, tableName, recordsAsList):
+    def insertValuesOnConflictUpdate(self, schema: str, tableName: str, recordsAsList):
         """raises UnableToSaveException
         """
 
@@ -155,7 +155,7 @@ class DAO(object):
                 recordsAsTuplesList.append(values)
 
             updateQueryPart = ','.join([t[0] + "=excluded." + t[0] for t in l])
-            insert = f'insert into {tableName} ({columns}) values %s on conflict (id) do update set {updateQueryPart}'
+            insert = f'insert into "{schema}"."{tableName}" ({columns}) values %s on conflict (id) do update set {updateQueryPart}'
 
             cur = self.conn.cursor()
             self.executeValues(cur, insert, recordsAsTuplesList)
