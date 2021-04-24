@@ -79,8 +79,8 @@ class DAO(object):
 
     #################################################################
 
-    def createVarCharTable(self, schema: str, tableName: str, columns: list):
-        sql = getCreateTableQuery(schema, tableName, columns)
+    def createVarCharTable(self, schema: str, tableName: str, columns: list, idColumn=None):
+        sql = getCreateTableQuery(schema, tableName, columns,idColumn)
         cur = self.conn.cursor()
         self.execute(cur, sql)
         self.conn.commit()

@@ -24,6 +24,7 @@ def initialize():
     parser.add_argument('-t', '--table', type=str, help="table name (must match [a-z0-9_]* )(default: the filename lowercased and normalised)", default=os.environ.get("P2C_TABLE", ""), required=False)
     parser.add_argument('-D', '--delimiter', type=str, help="delimiter (default: ',')", default=os.environ.get("P2C_DELIMITER", ","), required=False)
     parser.add_argument('-tp', '--table-prefix', type=str, help="table name prefix", default=os.environ.get("P2C_TABLE_NAME_PREFIX", ""), required=False)
+    parser.add_argument('-pk', '--primary-key', type=str, help="primary key column name to be added", default=os.environ.get("P2C_PRIMARY_KEY", ""), required=False)
 
     parser.add_argument('--filename-pattern', type=str, help="Glob-style lookup pattern. Ignored when the target is file.(default: '*.csv')", default=os.environ.get("P2C_FILENAME_PATTERN", "*.csv"), required=False)
     parser.add_argument('--drop-if-exists', help="drop table if it already exists", action='store_true', required=False)
@@ -48,6 +49,7 @@ def initialize():
     Properties.user = args.username
     Properties.password = args.password
     Properties.tableNamePrefix = args.table_prefix
+    Properties.primaryKey = args.primary_key
 
     if args.table:
         Properties.table = args.table
@@ -61,17 +63,18 @@ def initialize():
     Properties.verboseLogging = args.verbose
 
     log.debug(f"""
-    schema=\t\t\t\t{Properties.schema}
     dbname=\t\t\t\t{Properties.dbname}
-    user=\t\t\t\t{Properties.user}
+    schema=\t\t\t\t{Properties.schema}
     host=\t\t\t\t{Properties.host}
     port=\t\t\t\t{Properties.port}
+    user=\t\t\t\t{Properties.user}
     target=\t\t\t\t{Properties.target}
     filenamePattern=\t{Properties.filenamePattern}
-    [prefix]table=\t\t{Properties.tableNamePrefix}{Properties.table}
     delimiter=\t\t\t{Properties.delimiter}
+    [prefix]table=\t\t{Properties.tableNamePrefix}{Properties.table}
     dropTableIfExists=\t{Properties.dropTableIfExists}
     castNumbers=\t\t{Properties.castNumbers}
+    primaryKey=\t\t{Properties.primaryKey}
     verboseLogging=\t\t{Properties.verboseLogging}
     """)
 

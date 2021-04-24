@@ -14,15 +14,26 @@ def getCastColumnToFloatQuery(schema: str, table: str, column: str) -> str:
     return query
 
 
-def getCreateTableQuery(schema: str, table: str, columns: list) -> str:
+def getCreateTableQuery(schema: str, table: str, columns: list, idColumnName=None) -> str:
     query = f"""CREATE TABLE "{schema}"."{table}"
 (
-    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
 """
-    for column in columns:
-        query += f"{column} character varying,"
+    if idColumnName:
+        query +=f"""    "{idColumnName}" integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+        """
 
-    query += f"""CONSTRAINT "{table}_pkey" PRIMARY KEY (id)
+
+    query+=',\n'.join([f"    {column} character varying" for column in columns])
+
+#     for column in columns:
+#         query += f"""   {column} character varying,
+# """
+
+    if idColumnName:
+        query += f"""
+,CONSTRAINT "{table}_pkey" PRIMARY KEY ("{idColumnName}")"""
+
+    query += """
 );
 """
 

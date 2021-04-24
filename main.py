@@ -96,7 +96,7 @@ def processTarget(target: namedtuple):
         log.debug(f"dropping table: {target.table}")
         dao.dropTable(Properties.schema, target.table)
 
-    dao.createVarCharTable(Properties.schema, target.table, newHeaders)
+    dao.createVarCharTable(Properties.schema, target.table, newHeaders, Properties.primaryKey)
 
     with open(target.filePath, mode='r', newline='', encoding=Properties.fileEncoding) as csv_file:
         csvReader = csv.DictReader(csv_file, delimiter=Properties.delimiter, quotechar='"')

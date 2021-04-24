@@ -25,6 +25,7 @@ class Properties:
     table = ''
     delimiter = ','
     tableNamePrefix = ''
+    primaryKey = ''
 
     filenamePattern = ''
     dropTableIfExists = False  # this is not a default value. It will always be replaced by the initializer
