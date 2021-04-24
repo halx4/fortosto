@@ -45,9 +45,9 @@ class TableNormalizer(object):
         # iterate headers with index
         for i in range(len(headers)):
             header = headers[i]
-            log.debug("examining header: " + header)
+            log.trace("examining header: " + header)
             normalizedHeader = StringsNormalizer.normalizePgColumnName(header)
-            log.debug("normalized header: " + normalizedHeader)
+            log.trace("normalized header: " + normalizedHeader)
 
             dedupedNormalizedHeader = TableNormalizer.getDedupedHeaderName(normalizedHeader, currentlyNormalisedHeaders)
 
