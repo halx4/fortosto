@@ -25,15 +25,18 @@ batchSize = Properties.batchSize
 
 dao = None
 
-TargetInfo=namedtuple('TargetInfo',['filePath','table'])
+TargetInfo = namedtuple('TargetInfo', ['filePath', 'table'])
+
 
 def main():
     initialize()
 
+    # initialize db connection
     global dao
     dao = DAO(Properties.developmentMode)
+    log.info("DB connection established")
 
-    target = './testData/bulk/'
+    target = Properties.filename
     if path.exists(target):
         log.debug('target exists')
     else:
@@ -46,10 +49,12 @@ def main():
         log.info(f"filenamePattern= {filenamePattern}")
         targetsFilenames = sorted(glob.glob(filenamePattern, recursive=True))
         # consider filtering out dirs
-        targetsList = [TargetInfo(filePath=target, table=StringsNormalizer.filenameToNormalisedTableName(target)) for target in targetsFilenames]
+        targetsList = [TargetInfo(filePath=target,
+                                  table=Properties.tableNamePrefix + StringsNormalizer.filenameToNormalisedTableName(
+                                      target)) for target in targetsFilenames]
     else:
-        log.debug("It is Not a dir")
-        targetsList = TargetInfo(filePath=target,  table=Properties.table)
+        log.debug("Not a dir")
+        targetsList = TargetInfo(filePath=target, table=Properties.tableNamePrefix + Properties.table)
 
     log.info(f"targetsList={targetsList}")
     processTargets(targetsList)
@@ -105,7 +110,7 @@ def processTarget(target: namedtuple):
                 log.error("Db error: " + str(e))
                 exit(1)
 
-    if(Properties.castNumbers):
+    if (Properties.castNumbers):
         ## casting attempt of columns (except the id column)
         tryCastingHeaders(dao, newHeaders)
 
