@@ -23,7 +23,7 @@ def initialize():
     parser.add_argument('-p', '--password', type=str, help="Db password", default=os.environ.get("P2C_PASSWORD", ""), required=False)
     parser.add_argument('-t', '--table', type=str, help="table name (must match [a-z0-9_]* )(default: the filename lowercased and normalised)", default=os.environ.get("P2C_TABLE", ""), required=False)
     parser.add_argument('-D', '--delimiter', type=str, help="delimiter (default: ',')", default=os.environ.get("P2C_DELIMITER", ","), required=False)
-    parser.add_argument('--table-prefix', type=str, help="table name prefix", default=os.environ.get("P2C_TABLE_NAME_PREFIX", ""), required=False)
+    parser.add_argument('-tp', '--table-prefix', type=str, help="table name prefix", default=os.environ.get("P2C_TABLE_NAME_PREFIX", ""), required=False)
 
     parser.add_argument('--filename-pattern', type=str, help="Glob-style lookup pattern. Ignored when the target is file.(default: '*.csv')", default=os.environ.get("P2C_FILENAME_PATTERN", "*.csv"), required=False)
     parser.add_argument('--drop-if-exists', help="drop table if it already exists", action='store_true', required=False)
