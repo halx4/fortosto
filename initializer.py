@@ -26,7 +26,7 @@ def initialize():
     parser.add_argument('-tp', '--table-prefix', type=str, help="table name prefix", default=os.environ.get("P2C_TABLE_NAME_PREFIX", ""), required=False)
     parser.add_argument('-pk', '--primary-key', type=str, help="primary key column name to be added", default=os.environ.get("P2C_PRIMARY_KEY", ""), required=False)
 
-    parser.add_argument('--filename-pattern', type=str, help="Glob-style lookup pattern. Ignored when the target is file.(default: '*.csv')", default=os.environ.get("P2C_FILENAME_PATTERN", "*.csv"), required=False)
+    parser.add_argument('--filename-pattern', type=str, help="Glob-style lookup pattern.\n Ignored when the target is file.(default: '*.csv')", default=os.environ.get("P2C_FILENAME_PATTERN", "*.csv"), required=False)
     parser.add_argument('--drop-if-exists', help="drop table if it already exists", action='store_true', required=False)
     parser.add_argument('--cast-numbers', help="try casting number columns after importing", action='store_true', required=False)
     parser.add_argument('--verbose', help="verbose logging", action='store_true', required=False)
