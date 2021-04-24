@@ -22,12 +22,19 @@ def initialize():
     parser.add_argument('-p', '--password', type=str, help="Db password", default=os.environ.get("P2C_PASSWORD", ""), required=False)
     parser.add_argument('-t', '--table', type=str, help="table name (must match [a-z0-9_]* )(default: the filename lowercased and normalised)", default=os.environ.get("P2C_TABLE", ""), required=False)
     parser.add_argument('-D', '--delimiter', type=str, help="delimiter (default: ',')", default=os.environ.get("P2C_DELIMITER", ","), required=False)
+
+    parser.add_argument('--filename-pattern', type=str, help="Glob-style lookup pattern. Ignored when the target is file.(default: '*.csv')", default=os.environ.get("P2C_FILENAME_PATTERN", "*.csv"), required=False)
     parser.add_argument('--drop-if-exists', help="drop table if it already exists", action='store_true', required=False)
     parser.add_argument('--cast-numbers', help="try casting number columns after importing", action='store_true', required=False)
+
     parser.add_argument('-v', '--version', help="print version info", action='version', version=f'P2G v.{Properties.applicationVersion}')
     # verbose
     # dry run
     # atomic
+    # table name prefix
+    # skip primary key
+    # custom primary key column name
+
     # @formatter:on
 
     args = parser.parse_args()
@@ -46,6 +53,7 @@ def initialize():
         Properties.table = StringsNormalizer.filenameToNormalisedTableName(args.filename)
 
     Properties.delimiter = args.delimiter
+    Properties.filenamePattern = args.filename_pattern
     Properties.dropTableIfExists = args.drop_if_exists
     Properties.castNumbers = args.cast_numbers
 
@@ -59,7 +67,8 @@ def initialize():
     filename=\t{Properties.filename}
     table=\t\t{Properties.table}
     delimiter=\t{Properties.delimiter}
-    drop-if-exists=\t{Properties.dropTableIfExists}
+    filenamePattern=\t{Properties.filenamePattern}
+    dropTableIfExists=\t{Properties.dropTableIfExists}
     castNumbers=\t{Properties.castNumbers}
     """)
     return
