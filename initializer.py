@@ -1,5 +1,7 @@
 import argparse
 import os
+
+from commons.stringsNormalizer import StringsNormalizer
 from properties import Properties
 import ntpath
 from commons.loggingUtils import getRootLogger
