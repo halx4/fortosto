@@ -34,8 +34,6 @@ def initialize():
     parser.add_argument('-v', '--version', help="print version info", action='version', version=f'P2G v.{Properties.applicationVersion}')
     # dry run
     # atomic
-    # skip primary key
-    # custom primary key column name
 
     # @formatter:on
 
