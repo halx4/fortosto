@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import traceback
 
 import psycopg2
 from collections import namedtuple
@@ -67,9 +68,11 @@ def processTargets(targets: list):
             processTarget(target)
             log.info(f"processing file {target} completed successfully")
         except Exception as e:
-            log.error(e)
-            failedTargets.append((target[0], target[1], e))
-    log.warning(f"failed targets: {failedTargets}")
+            stacktrace = traceback.format_exc()
+            log.error(stacktrace)
+            failedTargets.append((target[0], target[1], stacktrace))
+    for entry in failedTargets:
+        log.warning(f"failed: {entry}")
 
 
 def processTarget(target: namedtuple):
