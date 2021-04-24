@@ -28,6 +28,7 @@ class Properties:
     filenamePattern = ''
     dropTableIfExists = False  # this is not a default value. It will always be replaced by the initializer
     castNumbers = False  # this is not a default value. It will always be replaced by the initializer
+    verboseLogging = False
 
     batchSize = 30000
 

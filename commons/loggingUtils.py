@@ -16,6 +16,8 @@ from properties import Properties
 # log.error('This is an error message')
 # log.critical('This is a critical message')
 
+VERBOSE_LOG_LEVEL=5
+
 logger = logging.getLogger()
 
 

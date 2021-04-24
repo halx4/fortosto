@@ -1,10 +1,11 @@
 import argparse
 import os
 
+from commons import loggingUtils
 from commons.stringsNormalizer import StringsNormalizer
 from properties import Properties
 import ntpath
-from commons.loggingUtils import getRootLogger
+from commons.loggingUtils import getRootLogger, VERBOSE_LOG_LEVEL
 
 log = getRootLogger()
 
@@ -26,9 +27,9 @@ def initialize():
     parser.add_argument('--filename-pattern', type=str, help="Glob-style lookup pattern. Ignored when the target is file.(default: '*.csv')", default=os.environ.get("P2C_FILENAME_PATTERN", "*.csv"), required=False)
     parser.add_argument('--drop-if-exists', help="drop table if it already exists", action='store_true', required=False)
     parser.add_argument('--cast-numbers', help="try casting number columns after importing", action='store_true', required=False)
+    parser.add_argument('--verbose', help="verbose logging", action='store_true', required=False)
 
     parser.add_argument('-v', '--version', help="print version info", action='version', version=f'P2G v.{Properties.applicationVersion}')
-    # verbose
     # dry run
     # atomic
     # table name prefix
@@ -56,6 +57,7 @@ def initialize():
     Properties.filenamePattern = args.filename_pattern
     Properties.dropTableIfExists = args.drop_if_exists
     Properties.castNumbers = args.cast_numbers
+    Properties.verboseLogging = args.verbose
 
     log.debug(f"""
     schema=\t\t{Properties.schema}
@@ -70,9 +72,14 @@ def initialize():
     filenamePattern=\t{Properties.filenamePattern}
     dropTableIfExists=\t{Properties.dropTableIfExists}
     castNumbers=\t{Properties.castNumbers}
+    verboseLogging=\t{Properties.verboseLogging}
     """)
-    return
 
+    # configure logging
+    if Properties.verboseLogging:
+        loggingUtils.setLevel(VERBOSE_LOG_LEVEL)
+
+    return
 
 if __name__ == '__main__':
     initialize()
