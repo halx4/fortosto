@@ -41,7 +41,7 @@ def initialize():
     if args.table:
         Properties.table = args.table
     else:
-        Properties.table = os.path.splitext(ntpath.basename(args.filename.lower()))[0]
+        Properties.table = StringsNormalizer.filenameToNormalisedTableName(args.filename)
 
     Properties.delimiter = args.delimiter
     Properties.dropTableIfExists = args.drop_if_exists
