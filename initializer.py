@@ -3,12 +3,14 @@ import os
 from properties import Properties
 import ntpath
 from commons.loggingUtils import getRootLogger
+
 log = getRootLogger()
 
-def initialize():
 
-    parser = argparse.ArgumentParser(description='Imports csv data to Postgres DB',
-                                     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+def initialize():
+    #@formatter:off
+    parser = argparse.ArgumentParser(description='Imports csv data to Postgres DB',formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
     parser.add_argument('-f', '--filename', type=str, help="CSV File name(default: lowercased file name)", required=True)
     parser.add_argument('-s', '--schema', type=str, help="The schema name", default=os.environ.get("P2C_SCHEMA","public"), required=False)
     parser.add_argument('-d', '--database', type=str, help="The db name", default=os.environ.get("P2C_DB", "postgres"), required=False)
@@ -22,6 +24,8 @@ def initialize():
     parser.add_argument('-v', '--version', help="print version info", action='version', version=f'P2G v.{Properties.applicationVersion}')
     # verbose
     # dry run
+    # atomic
+    # @formatter:on
 
     args = parser.parse_args()
 
@@ -54,6 +58,7 @@ def initialize():
     drop-if-exists=\t{Properties.dropTableIfExists}
     """)
     return
+
 
 if __name__ == '__main__':
     initialize()
