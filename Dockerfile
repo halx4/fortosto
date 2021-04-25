@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM python:3.8 as build-stage
 
 RUN apt-get update
 
@@ -13,14 +13,20 @@ RUN pip install pyinstaller
 
 COPY ./ .
 
-RUN ls
-
 RUN pyinstaller -v
 RUN pyinstaller -F -n fortosto main.py
 
-RUN ls
 WORKDIR /code/dist
 RUN ./fortosto -v
-RUN ls -al
-RUN cat
 
+#FROM alpine:3
+#FROM python:3.8
+FROM ubuntu:20.10
+COPY --from=build-stage /code/dist/fortosto /usr/bin/fortosto
+
+#ENV PATH "$PATH:/temp/bin"
+
+#WORKDIR /usr/bin
+#RUN ls -al
+
+RUN fortosto -v
