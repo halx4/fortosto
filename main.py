@@ -34,7 +34,7 @@ def main():
     # initialize db connection
     global dao
     dao = DAO(Properties.developmentMode)
-    log.info("DB connection established")
+    log.info("DB connection established successfully")
 
     target = Properties.target
     if path.exists(target):
