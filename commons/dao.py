@@ -38,7 +38,7 @@ class DAO(object):
             self.connected = True
 
         except Exception as e:
-            raise PostgresException("Could not established connection to the database", e)
+            raise PostgresException("Could not establish connection to the database", e)
 
     #################################################################
 
