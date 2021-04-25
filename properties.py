@@ -9,7 +9,7 @@ class Properties:
 
     ##### Logging #####
 
-    logLevel = logging.DEBUG
+    logLevel = logging.INFO
     dependenciesLogLevel = logging.WARN
 
     fileEncoding = "utf-8-sig"
