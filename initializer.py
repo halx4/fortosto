@@ -52,7 +52,7 @@ def initialize():
     if args.table:
         Properties.table = args.table
     else:
-        Properties.table = StringsNormalizer.filenameToNormalisedTableName(args.filename)
+        Properties.table = StringsNormalizer.filenameToNormalisedTableName(args.target)
 
     Properties.delimiter = args.delimiter
     Properties.filenamePattern = args.filename_pattern
