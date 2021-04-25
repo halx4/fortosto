@@ -58,7 +58,7 @@ def main():
                                       target)) for target in targetsFilenames]
     else:
         log.debug("Not a dir")
-        targetsList = TargetInfo(filePath=target, table=Properties.tableNamePrefix + Properties.table)
+        targetsList = [TargetInfo(filePath=target, table=Properties.tableNamePrefix + Properties.table)]
 
     log.info(f"targetsList={targetsList}")
     processTargets(targetsList)
