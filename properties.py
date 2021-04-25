@@ -2,7 +2,7 @@ import logging
 
 
 class Properties:
-    applicationVersion = '0.1.1'
+    applicationVersion = '0.1.2'
 
     ##### DevMode ######
     developmentMode = False
