@@ -11,6 +11,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+## [0.1.3] - 2021-05-26
+
+### Added
+
+### Changed
+
+### Removed
+
+### Fixed
+ - bu where application is crashing when a single file is the target
 
 ## [0.1.2] - 2021-05-25
 
@@ -22,5 +32,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-[unreleased]: https://github.com/halx4/fortosto/compare/v0.1.2...HEAD
+[unreleased]: https://github.com/halx4/fortosto/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/halx4/fortosto/releases/tag/v0.1.3
 [0.1.2]: https://github.com/halx4/fortosto/releases/tag/v0.1.2
