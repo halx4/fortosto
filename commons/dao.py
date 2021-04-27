@@ -115,7 +115,7 @@ class DAO(object):
             record0 = recordsAsList[0]
 
             l = [(c, v) for c, v in record0.items()]
-            columns = ','.join([t[0] for t in l])
+            columns = ','.join([f'"{t[0]}"' for t in l])
 
             recordsAsTuplesList = list()
             # values for each record
@@ -145,7 +145,7 @@ class DAO(object):
             record0 = recordsAsList[0]
 
             l = [(c, v) for c, v in record0.items()]
-            columns = ','.join([t[0] for t in l])
+            columns = ','.join([f'"{t[0]}"' for t in l])
 
             recordsAsTuplesList = list()
             # values for each record
