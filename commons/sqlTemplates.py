@@ -1,7 +1,7 @@
 def getCastColumnToIntegerQuery(schema: str, table: str, column: str) -> str:
     query = f"""
     ALTER TABLE  "{schema}"."{table}"
-    ALTER COLUMN {column} TYPE INTEGER USING NULLIF({column}, '')::integer
+    ALTER COLUMN "{column}" TYPE INTEGER USING NULLIF("{column}", '')::integer
     """
     return query
 
@@ -9,7 +9,7 @@ def getCastColumnToIntegerQuery(schema: str, table: str, column: str) -> str:
 def getCastColumnToFloatQuery(schema: str, table: str, column: str) -> str:
     query = f"""
     ALTER TABLE  "{schema}"."{table}"
-    ALTER COLUMN {column} TYPE FLOAT USING NULLIF({column}, '')::float
+    ALTER COLUMN "{column}" TYPE FLOAT USING NULLIF("{column}", '')::float
     """
     return query
 
@@ -23,7 +23,7 @@ def getCreateTableQuery(schema: str, table: str, columns: list, idColumnName=Non
         """
 
 
-    query+=',\n'.join([f"    {column} character varying" for column in columns])
+    query+=',\n'.join([f"""    "{column}" character varying""" for column in columns])
 
 #     for column in columns:
 #         query += f"""   {column} character varying,
