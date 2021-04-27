@@ -8,4 +8,4 @@ def isJsonlTarget(filePath:str):
     return True if (getLowercasedFilenameExtension(filePath) in Properties.jsonlFileExtensions) else False
 
 def getLowercasedFilenameExtension(input: str) -> str:
-    return os.path.splitext(input)[1]
+    return os.path.splitext(input.lower())[1]
