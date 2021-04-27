@@ -34,6 +34,8 @@ class Properties:
 
     batchSize = 30000
 
+    jsonlFileExtensions = {'.jsonl'}
+
 
 if Properties.developmentMode:
     print("#######################")
