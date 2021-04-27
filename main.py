@@ -44,7 +44,7 @@ def main():
     if path.exists(target):
         log.debug('target exists')
     else:
-        log.debug('target not found')
+        log.error(f'target not found( {target} )')
         exit(1)
 
     if os.path.isdir(target):
