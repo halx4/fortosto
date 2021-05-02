@@ -1,6 +1,5 @@
 from psycopg2._psycopg import AsIs
 
-from commons.PostgresCastException import PostgresCastException
 from commons.PostgresException import PostgresException
 from commons.UnableToSaveException import UnableToSaveException
 from commons.sqlTemplates import getCreateTableQuery, getCastColumnToIntegerQuery, getCastColumnToFloatQuery, \
