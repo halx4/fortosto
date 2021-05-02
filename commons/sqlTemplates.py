@@ -45,3 +45,11 @@ def getDropTableQuery(schema: str, table: str, ifExists: bool) -> str:
     query = f'DROP TABLE {ifExistsString}"{schema}"."{table}"'
 
     return query
+
+
+def getTruncateTableQuery(schema: str, table: str, cascade: bool = False) -> str: # TODO test
+    query = f'TRUNCATE "{schema}"."{table}"'
+    if (cascade):
+        query += f' CASCADE'
+
+    return query
