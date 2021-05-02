@@ -88,7 +88,7 @@ def processTargets(targets: list):
         log.warning(f"failed: {entry}")
 
 
-def processTarget(target: namedtuple):
+def processTarget(target: TargetInfo):
     global dao
 
     fileType = FileType.csv
@@ -118,7 +118,7 @@ def processTarget(target: namedtuple):
         tryCastingHeaders(dao, newHeaders)
 
 
-def importToDbTable(target: namedtuple, headers, newHeaders, fileType: FileType):
+def importToDbTable(target: TargetInfo, headers, newHeaders, fileType: FileType):
     if (fileType == FileType.csv):
         return importCsvToDbTable(target, headers, newHeaders)
     elif fileType == FileType.jsonl:
@@ -127,7 +127,7 @@ def importToDbTable(target: namedtuple, headers, newHeaders, fileType: FileType)
         raise UnexpectedEnumValueException(f"got value: {fileType}")
 
 
-def importJsonlToDbTable(target: namedtuple, headers, newHeaders):
+def importJsonlToDbTable(target: TargetInfo, headers, newHeaders):
     with open(target.filePath, mode='r', newline='', encoding=Properties.fileEncoding) as file:
 
         batchNo = 0
@@ -149,7 +149,7 @@ def importJsonlToDbTable(target: namedtuple, headers, newHeaders):
                 exit(1)
 
 
-def importCsvToDbTable(target: namedtuple, headers, newHeaders):
+def importCsvToDbTable(target: TargetInfo, headers, newHeaders):
     with open(target.filePath, mode='r', newline='', encoding=Properties.fileEncoding) as csv_file:
         csvReader = csv.DictReader(csv_file, delimiter=Properties.delimiter, quotechar='"')
 
