@@ -8,19 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added 
+ - support for importing json lines (.jsonl) files
 
 ### Fixed
 
 ## [0.1.3] - 2021-05-26
 
-### Added
-
-### Changed
-
-### Removed
-
 ### Fixed
- - bu where application is crashing when a single file is the target
+ - bug where application is crashing when a single file is the target
 
 ## [0.1.2] - 2021-05-25
 
