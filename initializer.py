@@ -27,14 +27,11 @@ def initialize():
     parser.add_argument('-pk', '--primary-key', type=str, help="primary key column name to be added", default=os.environ.get("FST_PRIMARY_KEY", ""), required=False)
 
     parser.add_argument('--filename-pattern', type=str, help="Glob-style lookup pattern.\n Ignored when the target is file.(default: '*.csv')", default=os.environ.get("FST_FILENAME_PATTERN", "*.csv"), required=False)
-    parser.add_argument('--drop-if-exists', help="drop table if it already exists", action='store_true', required=False)
+    parser.add_argument('-die', '--drop-if-exists', help="drop table if it already exists", action='store_true', required=False)
     parser.add_argument('--cast-numbers', help="try casting number columns after importing", action='store_true', required=False)
     parser.add_argument('--verbose', help="verbose logging", action='store_true', required=False)
 
     parser.add_argument('-v', '--version', help="print version info", action='version', version=f'fortosto v.{Properties.applicationVersion}')
-    # dry run
-    # atomic
-    # no-headers
 
     # @formatter:on
 
