@@ -107,10 +107,17 @@ fortosto [-h] -f TARGET [-H HOST] [-P PORT] [-u USERNAME] [-p PASSWORD]
 
 #### Batch import
 
+ - will continue when there is an error with one file.
 
+## General Notes
+
+ - table and column names are normalised
+    TODO: add definition of normalization...
+ - operations are not atomic...
+ 
 ## Limitations
 
-- Csv must have headers
+- Csv files MUST have headers
 - Jsonl: all lines must have the same keys
 
 ## Build

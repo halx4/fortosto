@@ -7,7 +7,6 @@ import traceback
 import psycopg2
 from collections import namedtuple
 
-from commons.CastDataType import CastDataType
 import glob
 
 from commons.FileType import FileType
