@@ -9,7 +9,7 @@ class TestTableNormalizer(unittest.TestCase):
     def test_createTable(self):
         dao = DAO(False)
 
-        result = dao.createVarCharTable("playground", "foo")
+        result = dao.createVarCharTable("playground", "foo", ['c1', 'c2', 'c3'])
         print(result)
 
 
