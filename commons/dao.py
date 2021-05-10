@@ -47,7 +47,7 @@ class DAO(object):
         if conn is not None:
             self.developmentMode = developmentMode
             self.conn = conn
-            self.connected = False
+            self.connected = True
             return
         else:
             raise PostgresException("conn object cannot be None")

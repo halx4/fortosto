@@ -9,7 +9,6 @@ class TestUtils(unittest.TestCase):
 
     def test_getLowercasedFilenameExtension(self):
 
-
         result = getLowercasedFilenameExtension( "foo.txt")
         self.assertEqual(".txt",result)
 

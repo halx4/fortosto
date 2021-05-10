@@ -36,7 +36,13 @@ def main():
 
     # initialize db connection
     global dao
-    dao = DAO(Properties.developmentMode)
+    dao = DAO.fromConnectionDetails(
+        dbname=Properties.dbname,
+        user=Properties.user,
+        password=Properties.password,
+        host=Properties.host,
+        port=Properties.port,
+        developmentMode=Properties.developmentMode)
     log.info("DB connection established successfully")
 
     target = Properties.target
