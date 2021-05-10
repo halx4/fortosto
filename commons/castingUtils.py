@@ -2,16 +2,15 @@ from __future__ import annotations
 
 from commons.CastDataType import CastDataType
 from commons.dao import DAO
-from properties import Properties
 from commons.loggingUtils import getRootLogger
 
 log = getRootLogger()
 
 
-def tryCastingHeaders(dao: DAO, columns: list):
+def tryCastingHeaders(dao: DAO, schema: str, table: str, columns: list):
     castResults = dict()
     for header in columns:
-        castResult = tryCastingColumn(dao, header)
+        castResult = tryCastingColumn(dao, schema, table, header)
         if castResult is not None:
             castResults[header] = str(castResult.name)
 
@@ -20,12 +19,12 @@ def tryCastingHeaders(dao: DAO, columns: list):
     return castResults
 
 
-def tryCastingColumn(dao: DAO, header: str) -> CastDataType|None:
+def tryCastingColumn(dao: DAO, schema: str, table: str, header: str) -> CastDataType | None:
     log.debug(f"attempting cast column {header}")
     ### integer
     try:
         log.debug("> casting to  Integer...")
-        dao.castColumnToInteger(Properties.schema, Properties.table, header)
+        dao.castColumnToInteger(schema, table, header)
         log.debug("> casting to  Integer succeeded")
         return CastDataType.Integer
     except Exception as e:
@@ -34,7 +33,7 @@ def tryCastingColumn(dao: DAO, header: str) -> CastDataType|None:
     ### double
     try:
         log.debug("> casting to  Float...")
-        dao.castColumnToFloat(Properties.schema, Properties.table, header)
+        dao.castColumnToFloat(schema, table, header)
         log.debug("> casting to  Float succeeded")
         return CastDataType.Double
     except Exception as e:

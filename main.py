@@ -120,7 +120,7 @@ def processTarget(target: TargetInfo):
 
     if (Properties.castNumbers):
         ## casting attempt of columns (except the id column)
-        tryCastingHeaders(dao, newHeaders)
+        tryCastingHeaders(dao, Properties.schema, Properties.table, newHeaders)
 
 
 def importToDbTable(target: TargetInfo, headers, newHeaders, fileType: FileType):
