@@ -98,7 +98,7 @@ def processTarget(target: TargetInfo):
 
     fileType = FileType.csv
     # determine if the file is csv or jsonl
-    if isJsonlTarget(target.filePath):
+    if isJsonlTarget(target.filePath, Properties.jsonlFileExtensions):
         log.info("jsonl file")
         fileType = FileType.jsonl
     else:
