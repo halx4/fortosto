@@ -4,7 +4,7 @@ from commons.PostgresException import PostgresException
 from commons.UnableToSaveException import UnableToSaveException
 from commons.sqlTemplates import getCreateTableQuery, getCastColumnToIntegerQuery, getCastColumnToFloatQuery, \
     getDropTableQuery
-from properties import Properties
+
 import psycopg2
 import psycopg2.extras
 import psycopg2.errorcodes
@@ -15,29 +15,42 @@ log = getRootLogger()
 
 
 class DAO(object):
-    def __init__(self, developmentMode=False, conn=None):
 
-        self.developmentMode = developmentMode
+    @staticmethod
+    def fromConnection(conn, developmentMode=False):
+        return DAO(developmentMode, conn)
 
-        if conn is not None:
-            self.conn = conn
-            self.connected = False
-            return
+    @staticmethod
+    def fromConnectionDetails(
+            dbname,
+            user,
+            password,
+            host,
+            port,
+            developmentMode=False):
 
-        # else
-        self.connected = False
         try:
-            self.conn = psycopg2.connect(
-                dbname=Properties.dbname,
-                user=Properties.user,
-                password=Properties.password,
-                host=Properties.host,
-                port=Properties.port
+            conn = psycopg2.connect(
+                dbname=dbname,
+                user=user,
+                password=password,
+                host=host,
+                port=port
             )
-            self.connected = True
+            return DAO(developmentMode, conn)
 
         except Exception as e:
             raise PostgresException("Could not establish connection to the database", e)
+
+    def __init__(self, developmentMode=False, conn=None):
+
+        if conn is not None:
+            self.developmentMode = developmentMode
+            self.conn = conn
+            self.connected = False
+            return
+        else:
+            raise PostgresException("conn object cannot be None")
 
     #################################################################
 
