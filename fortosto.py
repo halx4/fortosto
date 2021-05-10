@@ -17,7 +17,6 @@ from commons.castingUtils import tryCastingHeaders
 from commons.dao import DAO
 from commons.stringsNormalizer import StringsNormalizer
 from properties import Properties
-from initializer import initialize
 from commons.loggingUtils import getRootLogger
 import os.path
 from os import path
@@ -26,23 +25,54 @@ log = getRootLogger()
 
 batchSize = Properties.batchSize
 
-
 TargetInfo = namedtuple('TargetInfo', ['filePath', 'table'])
 
 
 class Fortosto:
     conn = None
+    schema = None
+    delimiter = None
+    tableNamePrefix = None
+    primaryKey = None
+    filenamePattern = None
+    dropTableIfExists = False
+    castNumbers = False
+
+    target = None
+    table = None
+
+    # private
     dao = None
 
-    @staticmethod
-    def fortosto(conn):
-        initialize()
+    def __init__(self,
+                 conn,
+                 schema: str,
+                 delimiter: str,
+                 tableNamePrefix: str,
+                 primaryKey: str,
+                 filenamePattern: str,
+                 dropTableIfExists: str,
+                 castNumbers: bool,
+                 target: str,
+                 table: str,
+                 ):
+        self.conn = conn
+        self.schema = schema
+        self.delimiter = delimiter
+        self.tableNamePrefix = tableNamePrefix
+        self.primaryKey = primaryKey
+        self.filenamePattern = filenamePattern
+        self.dropTableIfExists = dropTableIfExists
+        self.castNumbers = castNumbers
+        self.target = target
+        self.table = table
 
+    def fortosto(self):
 
         # initialize db connection
-        Fortosto.dao = DAO.fromConnection(conn, developmentMode=Properties.developmentMode)
+        self.dao = DAO.fromConnection(self.conn, developmentMode=Properties.developmentMode)
 
-        target = Properties.target
+        target = self.target
         if path.exists(target):
             log.debug('target exists')
         else:
@@ -55,32 +85,30 @@ class Fortosto:
             # add a trailing dash to the folder path if it doesnt have one
             target = target + "/" if not target.endswith("/") else target
 
-            filenamePattern = f'{target}{Properties.filenamePattern}'
+            filenamePattern = f'{target}{self.filenamePattern}'
             log.info(f"filenamePattern= {filenamePattern}")
             targetsFilenames = sorted(glob.glob(filenamePattern, recursive=True))
             # consider filtering out dirs
             targetsList = [TargetInfo(filePath=target,
-                                      table=Properties.tableNamePrefix + StringsNormalizer.filenameToNormalisedTableName(
+                                      table=self.tableNamePrefix + StringsNormalizer.filenameToNormalisedTableName(
                                           target)) for target in targetsFilenames]
         else:
             log.debug("Not a dir")
-            targetsList = [TargetInfo(filePath=target, table=Properties.tableNamePrefix + Properties.table)]
+            targetsList = [TargetInfo(filePath=target, table=self.tableNamePrefix + self.table)]
 
         log.info(f"targetsList={targetsList}")
-        Fortosto.processTargets(targetsList)
+        self.processTargets(targetsList)
 
-    @staticmethod
-    def processTargets(targets: list):
-        '''
-
+    def processTargets(self, targets: list):
+        """
         :param targets: list of namedtuples
         :return:
-        '''
+        """
         failedTargets = list()
         for target in targets:
             try:
                 log.info(f"Starting processing file {target}")
-                Fortosto.processTarget(target)
+                self.processTarget(target)
                 log.info(f"processing file {target} completed successfully")
             except Exception as e:
                 stacktrace = traceback.format_exc()
@@ -89,8 +117,7 @@ class Fortosto:
         for entry in failedTargets:
             log.warning(f"failed: {entry}")
 
-    @staticmethod
-    def processTarget(target: TargetInfo):
+    def processTarget(self, target: TargetInfo):
 
         fileType = FileType.csv
         # determine if the file is csv or jsonl
@@ -100,35 +127,33 @@ class Fortosto:
         else:
             log.info("csv file")
 
-        headers = Fortosto.getHeadersFromLocalFile(fileType, target.filePath)
+        headers = self.getHeadersFromLocalFile(fileType, target.filePath)
         log.debug(f"headers: {headers}")
 
         newHeaders = TableNormalizer.normalizeHeaders(headers)
         log.debug(f"normalised headers: {newHeaders}")
 
-        if Properties.dropTableIfExists:
+        if self.dropTableIfExists:
             log.debug(f"dropping table: {target.table}")
-            Fortosto.dao.dropTable(Properties.schema, target.table)
+            self.dao.dropTable(self.schema, target.table)
 
-        Fortosto.dao.createVarCharTable(Properties.schema, target.table, newHeaders, Properties.primaryKey)
+        self.dao.createVarCharTable(self.schema, target.table, newHeaders, self.primaryKey)
 
-        Fortosto.importToDbTable(target, headers, newHeaders, fileType)
+        self.importToDbTable(target, headers, newHeaders, fileType)
 
-        if (Properties.castNumbers):
-            ## casting attempt of columns (except the id column)
-            tryCastingHeaders(Fortosto.dao, Properties.schema, Properties.table, newHeaders)
+        if (self.castNumbers):
+            # casting attempt of columns (except the id column)
+            tryCastingHeaders(self.dao, self.schema, self.table, newHeaders)
 
-    @staticmethod
-    def importToDbTable(target: TargetInfo, headers, newHeaders, fileType: FileType):
+    def importToDbTable(self, target: TargetInfo, headers, newHeaders, fileType: FileType):
         if (fileType == FileType.csv):
-            return Fortosto.importCsvToDbTable(target, headers, newHeaders)
+            return self.importCsvToDbTable(target, headers, newHeaders)
         elif fileType == FileType.jsonl:
-            return Fortosto.importJsonlToDbTable(target, headers, newHeaders)
+            return self.importJsonlToDbTable(target, headers, newHeaders)
         else:
             raise UnexpectedEnumValueException(f"got value: {fileType}")
 
-    @staticmethod
-    def importJsonlToDbTable(target: TargetInfo, headers, newHeaders):
+    def importJsonlToDbTable(self, target: TargetInfo, headers, newHeaders):
         with open(target.filePath, mode='r', newline='', encoding=Properties.fileEncoding) as file:
 
             batchNo = 0
@@ -144,25 +169,24 @@ class Fortosto:
 
                 normalizedRecords = TableNormalizer.normalizeRecords(headers, newHeaders, records)
                 try:
-                    Fortosto.dao.saveRecordsToDb(Properties.schema, target.table, normalizedRecords)
+                    self.dao.saveRecordsToDb(self.schema, target.table, normalizedRecords)
                 except psycopg2.DatabaseError as e:
                     log.error("Db error: " + str(e))
                     exit(1)
 
-    @staticmethod
-    def importCsvToDbTable(target: TargetInfo, headers, newHeaders):
+    def importCsvToDbTable(self, target: TargetInfo, headers, newHeaders):
         with open(target.filePath, mode='r', newline='', encoding=Properties.fileEncoding) as csv_file:
-            csvReader = csv.DictReader(csv_file, delimiter=Properties.delimiter, quotechar='"')
+            csvReader = csv.DictReader(csv_file, delimiter=self.delimiter, quotechar='"')
 
             hasMore = True
             batchNo = 0
             while hasMore:
                 batchNo += 1
                 log.info(f"batchNo: {batchNo}, record: {batchNo * batchSize}")
-                (batchDataRows, hasMore) = Fortosto.getNextBatch(csvReader)
+                (batchDataRows, hasMore) = self.getNextBatch(csvReader)
                 normalizedRecords = TableNormalizer.normalizeRecords(headers, newHeaders, batchDataRows)
                 try:
-                    Fortosto.dao.saveRecordsToDb(Properties.schema, target.table, normalizedRecords)
+                    self.dao.saveRecordsToDb(self.schema, target.table, normalizedRecords)
                 except psycopg2.DatabaseError as e:
                     log.error("Db error: " + str(e))
                     exit(1)
@@ -183,10 +207,9 @@ class Fortosto:
 
         return (batch, True)
 
-    @staticmethod
-    def getHeadersFromLocalFile(fileType: FileType, filePath: str):
+    def getHeadersFromLocalFile(self, fileType: FileType, filePath: str):
         if (fileType == FileType.csv):
-            return Fortosto.getCsvHeadersFromLocalFile(filePath)
+            return self.getCsvHeadersFromLocalFile(filePath)
         elif fileType == FileType.jsonl:
             return Fortosto.getJsonlHeadersFromLocalFile(filePath)
         else:
@@ -200,18 +223,16 @@ class Fortosto:
 
             return list(firstLineAsDict)
 
-    @staticmethod
-    def getCsvHeadersFromLocalFile(filePath: str) -> list:
+    def getCsvHeadersFromLocalFile(self, filePath: str) -> list:
         # get the headers as list
         with open(filePath, mode='r', newline='', encoding=Properties.fileEncoding) as csv_file:
-            csvReader = csv.reader(csv_file, delimiter=Properties.delimiter, quotechar='"')
+            csvReader = csv.reader(csv_file, delimiter=self.delimiter, quotechar='"')
             headers = next(csvReader)
         return headers
 
-    @staticmethod
-    def getCsvDataFromLocalFile(filePath: str) -> list:
+    def getCsvDataFromLocalFile(self, filePath: str) -> list:
         with open(filePath, mode='r', newline='', encoding=Properties.fileEncoding) as csv_file:
-            csvReader = csv.DictReader(csv_file, delimiter=Properties.delimiter, quotechar='"')
+            csvReader = csv.DictReader(csv_file, delimiter=self.delimiter, quotechar='"')
 
             dataRows = list()
             for row in csvReader:

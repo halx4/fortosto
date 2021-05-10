@@ -21,9 +21,21 @@ def main():
         port=Properties.port
     )
     log.info("DB connection established successfully")
-    return Fortosto.fortosto(conn)
 
+    core = Fortosto(
+        conn=conn,
+        schema=Properties.schema,
+        delimiter=Properties.delimiter,
+        tableNamePrefix=Properties.tableNamePrefix,
+        primaryKey=Properties.primaryKey,
+        filenamePattern=Properties.filenamePattern,
+        dropTableIfExists=Properties.dropTableIfExists,
+        castNumbers=Properties.castNumbers,
+        target=Properties.target,
+        table=Properties.table
+    )
 
+    return core.fortosto()
 
 
 if __name__ == '__main__':
