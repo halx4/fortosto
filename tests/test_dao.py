@@ -1,6 +1,6 @@
 import unittest
-from commons.TableNormalizer import TableNormalizer
-from commons.dao import DAO
+from fortosto.commons.TableNormalizer import TableNormalizer
+from fortosto.commons.dao import DAO
 from tests.TestConfigurationProvider import TestConfigurationProvider
 import psycopg2
 

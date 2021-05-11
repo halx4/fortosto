@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 
-from commons.dateParser import DateParser
+from fortosto.commons.dateParser import DateParser
 
 
 class Test(unittest.TestCase):

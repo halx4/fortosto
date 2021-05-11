@@ -1,8 +1,8 @@
 import unittest
-from commons.TableNormalizer import TableNormalizer
-from commons.Utils import getLowercasedFilenameExtension
-from commons.dao import DAO
-from properties import Properties
+from fortosto.commons.TableNormalizer import TableNormalizer
+from fortosto.commons.Utils import getLowercasedFilenameExtension
+from fortosto.commons.dao import DAO
+from fortosto.properties import Properties
 
 
 class TestUtils(unittest.TestCase):

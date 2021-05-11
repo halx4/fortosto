@@ -2,7 +2,7 @@ import unittest
 
 from unidecode import unidecode
 
-from commons.stringsNormalizer import StringsNormalizer
+from fortosto.commons.stringsNormalizer import StringsNormalizer
 
 
 class Test(unittest.TestCase):
