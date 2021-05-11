@@ -2,6 +2,7 @@ import argparse
 import os
 
 from commons import loggingUtils
+from commons.InitializationResult import InitializationResult
 from commons.stringsNormalizer import StringsNormalizer
 from properties import Properties
 import ntpath
@@ -10,7 +11,8 @@ from commons.loggingUtils import getRootLogger, VERBOSE_LOG_LEVEL
 log = getRootLogger()
 
 
-def initialize():
+def initialize() -> InitializationResult:
+
     #@formatter:off
     parser = argparse.ArgumentParser(description='Imports csv data to Postgres DB',formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
@@ -37,50 +39,53 @@ def initialize():
 
     args = parser.parse_args()
 
-    Properties.target = args.target
-    Properties.schema = args.schema
-    Properties.dbname = args.database
-    Properties.host = args.host
-    Properties.port = args.port
-    Properties.user = args.username
-    Properties.password = args.password
-    Properties.tableNamePrefix = args.table_prefix
-    Properties.primaryKey = args.primary_key
+    result = InitializationResult()
+
+    result.target = args.target
+    result.schema = args.schema
+    result.dbname = args.database
+    result.host = args.host
+    result.port = args.port
+    result.user = args.username
+    result.password = args.password
+    result.tableNamePrefix = args.table_prefix
+    result.primaryKey = args.primary_key
 
     if args.table:
-        Properties.table = args.table
+        result.table = args.table
     else:
-        Properties.table = StringsNormalizer.filenameToNormalisedTableName(args.target)
+        result.table = StringsNormalizer.filenameToNormalisedTableName(args.target)
 
-    Properties.delimiter = args.delimiter
-    Properties.filenamePattern = args.filename_pattern
-    Properties.dropTableIfExists = args.drop_if_exists
-    Properties.castNumbers = args.cast_numbers
-    Properties.verboseLogging = args.verbose
+    result.delimiter = args.delimiter
+    result.filenamePattern = args.filename_pattern
+    result.dropTableIfExists = args.drop_if_exists
+    result.castNumbers = args.cast_numbers
+    result.verboseLogging = args.verbose
 
     log.debug(f"""
-    dbname=\t\t\t\t{Properties.dbname}
-    schema=\t\t\t\t{Properties.schema}
-    host=\t\t\t\t{Properties.host}
-    port=\t\t\t\t{Properties.port}
-    user=\t\t\t\t{Properties.user}
-    target=\t\t\t\t{Properties.target}
-    filenamePattern=\t{Properties.filenamePattern}
-    delimiter=\t\t\t{Properties.delimiter}
-    [prefix]table=\t\t{Properties.tableNamePrefix}{Properties.table}
-    dropTableIfExists=\t{Properties.dropTableIfExists}
-    castNumbers=\t\t{Properties.castNumbers}
-    primaryKey=\t\t{Properties.primaryKey}
-    verboseLogging=\t\t{Properties.verboseLogging}
+    dbname=\t\t\t\t{result.dbname}
+    schema=\t\t\t\t{result.schema}
+    host=\t\t\t\t{result.host}
+    port=\t\t\t\t{result.port}
+    user=\t\t\t\t{result.user}
+    target=\t\t\t\t{result.target}
+    filenamePattern=\t{result.filenamePattern}
+    delimiter=\t\t\t{result.delimiter}
+    [prefix]table=\t\t{result.tableNamePrefix}{result.table}
+    dropTableIfExists=\t{result.dropTableIfExists}
+    castNumbers=\t\t{result.castNumbers}
+    primaryKey=\t\t{result.primaryKey}
+    verboseLogging=\t\t{result.verboseLogging}
     """)
 
-    log.trace("password=\t\t{Properties.password}")
+    log.trace(f"password=\t\t{result.password}")
 
+    # TODO move this somewhere else
     # configure logging
-    if Properties.verboseLogging:
+    if result.verboseLogging:
         loggingUtils.setLevel(VERBOSE_LOG_LEVEL)
 
-    return
+    return result
 
 
 if __name__ == '__main__':

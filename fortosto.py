@@ -29,20 +29,6 @@ TargetInfo = namedtuple('TargetInfo', ['filePath', 'table'])
 
 
 class Fortosto:
-    conn = None
-    schema = None
-    delimiter = None
-    tableNamePrefix = None
-    primaryKey = None
-    filenamePattern = None
-    dropTableIfExists = False
-    castNumbers = False
-
-    target = None
-    table = None
-
-    # private
-    dao = None
 
     def __init__(self,
                  conn,
@@ -51,7 +37,7 @@ class Fortosto:
                  tableNamePrefix: str,
                  primaryKey: str,
                  filenamePattern: str,
-                 dropTableIfExists: str,
+                 dropTableIfExists: bool,
                  castNumbers: bool,
                  target: str,
                  table: str,
@@ -67,10 +53,11 @@ class Fortosto:
         self.target = target
         self.table = table
 
+        self.dao = DAO.fromConnection(self.conn, developmentMode=Properties.developmentMode)
+
     def fortosto(self):
 
         # initialize db connection
-        self.dao = DAO.fromConnection(self.conn, developmentMode=Properties.developmentMode)
 
         target = self.target
         if path.exists(target):
@@ -99,7 +86,7 @@ class Fortosto:
         log.info(f"targetsList={targetsList}")
         self.processTargets(targetsList)
 
-    def processTargets(self, targets: list):
+    def processTargets(self, targets: list[TargetInfo]):
         """
         :param targets: list of namedtuples
         :return:
