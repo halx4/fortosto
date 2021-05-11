@@ -5,8 +5,8 @@ from commons import loggingUtils
 from commons.InitializationResult import InitializationResult
 from commons.stringsNormalizer import StringsNormalizer
 from properties import Properties
-import ntpath
 from commons.loggingUtils import getRootLogger, VERBOSE_LOG_LEVEL
+import ntpath
 
 log = getRootLogger()
 

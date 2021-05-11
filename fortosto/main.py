@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import psycopg2
+
 from initializer import initialize
 from fortosto import Fortosto
 from commons.loggingUtils import getRootLogger
