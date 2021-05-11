@@ -9,15 +9,15 @@ from collections import namedtuple
 
 import glob
 
-from commons.FileType import FileType
-from commons.TableNormalizer import TableNormalizer
-from commons.UnexpectedEnumValueException import UnexpectedEnumValueException
-from commons.Utils import isJsonlTarget
-from commons.castingUtils import tryCastingHeaders
-from commons.dao import DAO
-from commons.stringsNormalizer import StringsNormalizer
-from properties import Properties
-from commons.loggingUtils import getRootLogger
+from .commons.FileType import FileType
+from .commons.TableNormalizer import TableNormalizer
+from .commons.UnexpectedEnumValueException import UnexpectedEnumValueException
+from .commons.Utils import isJsonlTarget
+from .commons.castingUtils import tryCastingHeaders
+from .commons.dao import DAO
+from .commons.stringsNormalizer import StringsNormalizer
+from .properties import Properties
+from .commons.loggingUtils import getRootLogger
 import os.path
 from os import path
 

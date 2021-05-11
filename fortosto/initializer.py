@@ -1,11 +1,11 @@
 import argparse
 import os
 
-from commons import loggingUtils
-from commons.InitializationResult import InitializationResult
-from commons.stringsNormalizer import StringsNormalizer
-from properties import Properties
-from commons.loggingUtils import getRootLogger, VERBOSE_LOG_LEVEL
+from .commons import loggingUtils
+from .commons.InitializationResult import InitializationResult
+from .commons.stringsNormalizer import StringsNormalizer
+from .properties import Properties
+from .commons.loggingUtils import getRootLogger, VERBOSE_LOG_LEVEL
 import ntpath
 
 log = getRootLogger()

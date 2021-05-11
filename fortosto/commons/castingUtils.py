@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from commons.CastDataType import CastDataType
-from commons.dao import DAO
-from commons.loggingUtils import getRootLogger
+from .CastDataType import CastDataType
+from .dao import DAO
+from .loggingUtils import getRootLogger
 
 log = getRootLogger()
 

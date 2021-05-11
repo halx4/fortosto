@@ -1,5 +1,5 @@
 import dateparser
-from commons.loggingUtils import getRootLogger
+from .loggingUtils import getRootLogger
 
 log = getRootLogger()
 

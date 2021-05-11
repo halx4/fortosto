@@ -1,5 +1,5 @@
 import logging
-from properties import Properties
+from ..properties import Properties
 
 # CRITICAL	50
 # ERROR		40

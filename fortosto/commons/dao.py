@@ -1,15 +1,15 @@
 from psycopg2._psycopg import AsIs
 
-from commons.PostgresException import PostgresException
-from commons.UnableToSaveException import UnableToSaveException
-from commons.sqlTemplates import getCreateTableQuery, getCastColumnToIntegerQuery, getCastColumnToFloatQuery, \
+from .PostgresException import PostgresException
+from .UnableToSaveException import UnableToSaveException
+from .sqlTemplates import getCreateTableQuery, getCastColumnToIntegerQuery, getCastColumnToFloatQuery, \
     getDropTableQuery
 
 import psycopg2
 import psycopg2.extras
 import psycopg2.errorcodes
 
-from commons.loggingUtils import getRootLogger
+from .loggingUtils import getRootLogger
 
 log = getRootLogger()
 

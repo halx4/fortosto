@@ -1,6 +1,6 @@
 import re
-from commons.stringsNormalizer import StringsNormalizer
-from commons.loggingUtils import getRootLogger
+from .stringsNormalizer import StringsNormalizer
+from .loggingUtils import getRootLogger
 
 log = getRootLogger()
 
