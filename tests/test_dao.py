@@ -5,7 +5,7 @@ from tests.TestConfigurationProvider import TestConfigurationProvider
 import psycopg2
 
 
-class TestTableNormalizer(unittest.TestCase):
+class TestDao(unittest.TestCase):
 
     def setUp(self):
         conn = psycopg2.connect(
@@ -19,17 +19,41 @@ class TestTableNormalizer(unittest.TestCase):
         self.dao = DAO.fromConnection(conn, False)
 
     def test_count(self):
+        table = "test_count"
 
-        self.dao.getRecordsCountOfTable(
+        exists = self.dao.tableExists(schema=TestConfigurationProvider.schema, tableName=table)
+        self.assertFalse(exists)
+
+        # create empty table
+        self.dao.createVarCharTable(schema=TestConfigurationProvider.schema, tableName=table,
+                                    columns=['c1', 'c2'])
+        exists = self.dao.tableExists(schema=TestConfigurationProvider.schema, tableName=table)
+        self.assertTrue(exists)
+
+        count = self.dao.getRecordCountOfTable(
             schema=TestConfigurationProvider.schema,
-            tableName="ext_test")
+            tableName=table)
+        self.assertEqual(count, 0)
 
-    def test_createTable(self):
+        # populate the table with some records
+        records = [{'c1': '1', 'c2': '2'}, {'c1': '3', 'c2': '4'}, {'c1': 'a', 'c2': 'b'}]
 
-        self.dao.createVarCharTable(schema=TestConfigurationProvider.schema, tableName="foo",
-                               columns=['c1', 'c2', 'c3'])
+        self.dao.saveRecordsToDb(schema=TestConfigurationProvider.schema,
+                                 table=table,
+                                 recordsAsList=records)
 
-        self.dao.dropTable(schema=TestConfigurationProvider.schema, tableName="foo")
+        count = self.dao.getRecordCountOfTable(
+            schema=TestConfigurationProvider.schema,
+            tableName=table)
+        self.assertEqual(count, 3)
+
+        # drop the table
+        self.dao.dropTable(schema=TestConfigurationProvider.schema, tableName=table)
+
+        exists = self.dao.tableExists(schema=TestConfigurationProvider.schema, tableName=table)
+        self.assertFalse(exists)
+
+
 
 
 if __name__ == '__main__':
