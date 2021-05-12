@@ -1,3 +1,5 @@
+from typing import List
+
 from psycopg2._psycopg import AsIs
 
 from .PostgresException import PostgresException
@@ -66,7 +68,17 @@ class DAO(object):
 
     def schemaExists(self, schema: str):
         cur = self.conn.cursor()
-        self.execute(cur, f"SELECT EXISTS(SELECT 1 FROM information_schema.schemata WHERE schema_name = '{schema}');")
+        self.execute(cur, f"SELECT EXISTS(SELECT FROM information_schema.schemata WHERE schema_name = '{schema}');")
+        self.conn.commit()
+        (result,) = cur.fetchone()
+        return result
+
+    #################################################################
+
+    def tableExists(self, schema: str, tableName: str):
+        cur = self.conn.cursor()
+        self.execute(cur,
+                     f"SELECT EXISTS(SELECT FROM information_schema.tables WHERE table_schema = '{schema}' AND table_name = '{tableName}');")
         self.conn.commit()
         (result,) = cur.fetchone()
         return result
@@ -91,7 +103,7 @@ class DAO(object):
 
     #################################################################
 
-    def createVarCharTable(self, schema: str, tableName: str, columns: list, idColumn=None):
+    def createVarCharTable(self, schema: str, tableName: str, columns: List[str], idColumn:str=None):
         sql = getCreateTableQuery(schema, tableName, columns, idColumn)
         cur = self.conn.cursor()
         self.execute(cur, sql)
@@ -107,7 +119,7 @@ class DAO(object):
 
     #################################################################
 
-    def getRecordsCountOfTable(self, schema: str,tableName: str):
+    def getRecordCountOfTable(self, schema: str, tableName: str):
         cur = self.conn.cursor()
         self.execute(cur, f'SELECT count(*) FROM "{schema}"."{tableName}";')
         self.conn.commit()
@@ -117,32 +129,31 @@ class DAO(object):
 
     #################################################################
 
-
-    def saveRecordsToDb(self, schema: str, table: str, recordsAsList: list):
+    def saveRecordsToDb(self, schema: str, table: str, recordsAsList: List[dict]):
         return self.insertValues(schema, table, recordsAsList)
 
     #################################################################
     #################################################################
 
     # PRIVATE METHODS
-    def insertValues(self, schema, tableName, recordsAsList):
+    def insertValues(self, schema, tableName, records: List[dict]):
         """raises UnableToSaveException
         """
 
         if (not self.connected):
             raise UnableToSaveException("Client is not connected to the database")
-        elif (not recordsAsList):  # list is empty
+        elif (not records):  # list is empty
             return
         else:
             # columns
-            record0 = recordsAsList[0]
+            record0 = records[0]
 
             l = [(c, v) for c, v in record0.items()]
             columns = ','.join([f'"{t[0]}"' for t in l])
 
             recordsAsTuplesList = list()
             # values for each record
-            for record in recordsAsList:
+            for record in records:
                 l = [(c, v) for c, v in record.items()]
                 values = tuple([t[1] for t in l])
                 recordsAsTuplesList.append(values)
