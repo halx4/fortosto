@@ -66,6 +66,26 @@ class DAO(object):
 
     #################################################################
 
+    def getColumnsInfoOfTable(self, schema: str, tableName: str) -> List[dict]:
+        cur = self.conn.cursor()
+        self.execute(cur, f"""SELECT 
+	column_name,ordinal_position,column_default,is_nullable,data_type,is_identity
+ FROM information_schema.columns 
+ WHERE table_schema = '{schema}' 
+ AND table_name   = '{tableName}';""")
+        self.conn.commit()
+        rawResult = cur.fetchall()
+        result = [
+            {'column_name': x[0],
+             'ordinal_position': x[1],
+             'column_default': x[2],
+             'is_nullable': True if x[3] == 'YES' else False,
+             'data_type': x[4],
+             'is_identity': True if x[5] == 'YES' else False
+             } for x in rawResult]
+        return result
+
+    #################################################################
     def schemaExists(self, schema: str):
         cur = self.conn.cursor()
         self.execute(cur, f"SELECT EXISTS(SELECT FROM information_schema.schemata WHERE schema_name = '{schema}');")
@@ -103,7 +123,7 @@ class DAO(object):
 
     #################################################################
 
-    def createVarCharTable(self, schema: str, tableName: str, columns: List[str], idColumn:str=None):
+    def createVarCharTable(self, schema: str, tableName: str, columns: List[str], idColumn: str = None):
         sql = getCreateTableQuery(schema, tableName, columns, idColumn)
         cur = self.conn.cursor()
         self.execute(cur, sql)
