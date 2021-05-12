@@ -9,33 +9,36 @@ from .commons.loggingUtils import getRootLogger
 log = getRootLogger()
 
 
-def main():
-    initResult = initialize()
+class Standalone:
 
-    conn = psycopg2.connect(
-        dbname=initResult.dbname,
-        user=initResult.user,
-        password=initResult.password,
-        host=initResult.host,
-        port=initResult.port
-    )
-    log.info("DB connection established successfully")
+    @staticmethod
+    def run():
+        initResult = initialize()
 
-    core = Fortosto(
-        conn=conn,
-        schema=initResult.schema,
-        delimiter=initResult.delimiter,
-        tableNamePrefix=initResult.tableNamePrefix,
-        primaryKey=initResult.primaryKey,
-        filenamePattern=initResult.filenamePattern,
-        dropTableIfExists=initResult.dropTableIfExists,
-        castNumbers=initResult.castNumbers,
-        target=initResult.target,
-        table=initResult.table
-    )
+        conn = psycopg2.connect(
+            dbname=initResult.dbname,
+            user=initResult.user,
+            password=initResult.password,
+            host=initResult.host,
+            port=initResult.port
+        )
+        log.info("DB connection established successfully")
 
-    return core.fortosto()
+        core = Fortosto(
+            conn=conn,
+            schema=initResult.schema,
+            delimiter=initResult.delimiter,
+            tableNamePrefix=initResult.tableNamePrefix,
+            primaryKey=initResult.primaryKey,
+            filenamePattern=initResult.filenamePattern,
+            dropTableIfExists=initResult.dropTableIfExists,
+            castNumbers=initResult.castNumbers,
+            target=initResult.target,
+            table=initResult.table
+        )
+
+        return core.fortosto()
 
 
 if __name__ == '__main__':
-    main()
+    Standalone.run()

@@ -3,3 +3,4 @@ psycopg2
 Unidecode
 dateparser
 #pyinstaller
+twine

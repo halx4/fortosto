@@ -1,2 +1,4 @@
 from .fortosto import Fortosto
-__all__ = [Fortosto]
+from .main import Standalone
+
+__all__ = [Fortosto, Standalone]
