@@ -1,5 +1,5 @@
 import unittest
-from commons.TableNormalizer import TableNormalizer
+from fortosto.commons.TableNormalizer import TableNormalizer
 
 
 class TestTableNormalizer(unittest.TestCase):

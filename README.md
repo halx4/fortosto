@@ -120,4 +120,12 @@ fortosto [-h] -f TARGET [-H HOST] [-P PORT] [-u USERNAME] [-p PASSWORD]
 - Csv files MUST have headers
 - Jsonl: all lines must have the same keys
 
+
+
 ## Build
+
+### Run tests
+
+
+
+

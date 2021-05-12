@@ -1,6 +1,6 @@
 import unittest
 
-from commons.sqlTemplates import getCreateTableQuery
+from fortosto.commons.sqlTemplates import getCreateTableQuery
 
 
 class TestSqlTemplates(unittest.TestCase):

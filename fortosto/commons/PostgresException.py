@@ -1,0 +1,2 @@
+class PostgresException(Exception):
+    pass
