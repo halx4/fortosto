@@ -23,8 +23,13 @@ setup(
     classifiers=[
         'Development Status :: 4 - Beta',
         # Chose either "3 - Alpha", "4 - Beta" or "5 - Production/Stable" as the current state of your package
+
         'Intended Audience :: Developers',  # Define that your audience are developers
-        'Topic :: Software Development :: Utilities',
+        'Intended Audience :: System Administrators',
+        'Intended Audience :: Information Technology',
+
+        'Topic :: Database',
+        'Topic :: Software Development',
         'License :: OSI Approved :: MIT License',  # Again, pick a license
         'Programming Language :: Python :: 3',  # Specify which pyhton versions that you want to support
         'Programming Language :: Python :: 3.7',
