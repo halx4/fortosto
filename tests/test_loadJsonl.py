@@ -28,7 +28,7 @@ class TestLoadJson(unittest.TestCase):
     def test_load(self):
         table = "test_load_jsonl"
         
-        print(f"droppping test table: {table}")
+        print(f"dropping test table: {table}")
         self.dao.dropTable(schema=TestConfigurationProvider.schema, tableName=table)
         exists = self.dao.tableExists(schema=TestConfigurationProvider.schema, tableName=table)
         self.assertFalse(exists)
@@ -60,7 +60,7 @@ class TestLoadJson(unittest.TestCase):
     def test_load_with_id(self):
         table = "test_load_jsonl_with_id"
 
-        print(f"droppping test table: {table}")
+        print(f"dropping test table: {table}")
         self.dao.dropTable(schema=TestConfigurationProvider.schema, tableName=table)
 
         engine = Fortosto(
