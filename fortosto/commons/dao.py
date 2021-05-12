@@ -107,6 +107,17 @@ class DAO(object):
 
     #################################################################
 
+    def getRecordsCountOfTable(self, schema: str,tableName: str):
+        cur = self.conn.cursor()
+        self.execute(cur, f'SELECT count(*) FROM "{schema}"."{tableName}";')
+        self.conn.commit()
+        rawResult = cur.fetchone()
+        result = rawResult[0]
+        return result
+
+    #################################################################
+
+
     def saveRecordsToDb(self, schema: str, table: str, recordsAsList: list):
         return self.insertValues(schema, table, recordsAsList)
 

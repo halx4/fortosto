@@ -7,13 +7,7 @@ import psycopg2
 
 class TestTableNormalizer(unittest.TestCase):
 
-    def test_createTable(self):
-        print(TestConfigurationProvider.host)
-        print(TestConfigurationProvider.port)
-        print(TestConfigurationProvider.schema)
-        print(TestConfigurationProvider.user)
-        print(TestConfigurationProvider.password)
-
+    def setUp(self):
         conn = psycopg2.connect(
             dbname=TestConfigurationProvider.dbname,
             user=TestConfigurationProvider.user,
@@ -22,12 +16,20 @@ class TestTableNormalizer(unittest.TestCase):
             port=TestConfigurationProvider.port
         )
 
-        dao = DAO.fromConnection(conn, False)
+        self.dao = DAO.fromConnection(conn, False)
 
-        dao.createVarCharTable(schema=TestConfigurationProvider.schema, tableName="foo",
+    def test_count(self):
+
+        self.dao.getRecordsCountOfTable(
+            schema=TestConfigurationProvider.schema,
+            tableName="ext_test")
+
+    def test_createTable(self):
+
+        self.dao.createVarCharTable(schema=TestConfigurationProvider.schema, tableName="foo",
                                columns=['c1', 'c2', 'c3'])
 
-        dao.dropTable(schema=TestConfigurationProvider.schema, tableName="foo")
+        self.dao.dropTable(schema=TestConfigurationProvider.schema, tableName="foo")
 
 
 if __name__ == '__main__':
