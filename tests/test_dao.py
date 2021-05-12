@@ -55,12 +55,13 @@ class TestDao(unittest.TestCase):
         self.assertEqual(c1Info['is_nullable'], True)
         self.assertEqual(c1Info['is_identity'], False)
 
-
     def test_count(self):
         table = "test_count"
 
-        exists = self.dao.tableExists(schema=TestConfigurationProvider.schema, tableName=table)
-        self.assertFalse(exists)
+        self.dao.dropTable(schema=TestConfigurationProvider.schema, tableName=table)
+
+        # exists = self.dao.tableExists(schema=TestConfigurationProvider.schema, tableName=table)
+        # self.assertFalse(exists)
 
         # create empty table
         self.dao.createVarCharTable(schema=TestConfigurationProvider.schema, tableName=table,
