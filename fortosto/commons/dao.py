@@ -5,7 +5,7 @@ from psycopg2._psycopg import AsIs
 from .PostgresException import PostgresException
 from .UnableToSaveException import UnableToSaveException
 from .sqlTemplates import getCreateTableQuery, getCastColumnToIntegerQuery, getCastColumnToFloatQuery, \
-    getDropTableQuery
+    getDropTableQuery, getTruncateTableQuery
 
 import psycopg2
 import psycopg2.extras
@@ -133,6 +133,14 @@ class DAO(object):
 
     def dropTable(self, schema: str, tableName: str):
         sql = getDropTableQuery(schema, tableName, ifExists=True)
+        cur = self.conn.cursor()
+        self.execute(cur, sql)
+        self.conn.commit()
+
+    #################################################################
+
+    def truncateTable(self, schema: str, table: str, restartIdentity: bool = False, cascade: bool = False):
+        sql = getTruncateTableQuery(schema, table, restartIdentity, cascade)
         cur = self.conn.cursor()
         self.execute(cur, sql)
         self.conn.commit()
