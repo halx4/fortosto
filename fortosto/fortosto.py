@@ -3,6 +3,7 @@ from itertools import islice
 import csv
 import json
 import traceback
+from typing import List
 
 import psycopg2
 from collections import namedtuple
@@ -86,7 +87,7 @@ class Fortosto:
         log.info(f"targetsList={targetsList}")
         self.processTargets(targetsList)
 
-    def processTargets(self, targets: list[TargetInfo]):
+    def processTargets(self, targets: List[TargetInfo]):
         """
         :param targets: list of namedtuples
         :return:
