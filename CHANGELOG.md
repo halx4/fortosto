@@ -10,6 +10,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 ### Changed
 
+## [1.1.0] - 2021-05-12
+
+### Added
+
+ - append mode (`--append`)
+
+### Changed
+
+ - project refactored to be exported as a python module as well as a standalone executable 
+
 ## [1.0.0] - 2021-05-10
 
 ### Added
@@ -39,7 +49,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-[unreleased]: https://github.com/halx4/fortosto/compare/v1.0.0...HEAD
+[unreleased]: https://github.com/halx4/fortosto/compare/v1.1.0...HEAD
+
+[1.1.0]: https://github.com/halx4/fortosto/releases/tag/v1.1.0
 [1.0.0]: https://github.com/halx4/fortosto/releases/tag/v1.0.0
 [0.1.3]: https://github.com/halx4/fortosto/releases/tag/v0.1.3
 [0.1.2]: https://github.com/halx4/fortosto/releases/tag/v0.1.2

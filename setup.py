@@ -6,7 +6,7 @@ setup(
     name='fortosto',  # How you named your package folder (MyLib)
     #packages=find_packages(),  # Chose the same as "name"
     packages=['fortosto', 'fortosto.commons'],
-    version='1.0.0',  # Start with a small number and increase it with every change you make
+    version='1.1.0',  # Start with a small number and increase it with every change you make
     license='MIT',  # Chose a license from here: https://help.github.com/articles/licensing-a-repository
     description='csv 2 pg loader',  # Give a short description about your library
     author='halx4',  # Type in your name
