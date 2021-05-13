@@ -105,8 +105,8 @@ class DAO(object):
 
     #################################################################
 
-    def castColumnToFloat(self, schema: str, tableName: str, column: str):
-        sql = getCastColumnToFloatQuery(schema, tableName, column)
+    def castColumnToFloat(self, schema: str, table: str, column: str):
+        sql = getCastColumnToFloatQuery(schema, table, column)
         cur = self.conn.cursor()
 
         self.execute(cur, sql)
@@ -114,8 +114,8 @@ class DAO(object):
 
     #################################################################
 
-    def castColumnToInteger(self, schema: str, tableName: str, column: str):
-        sql = getCastColumnToIntegerQuery(schema, tableName, column)
+    def castColumnToInteger(self, schema: str, table: str, column: str):
+        sql = getCastColumnToIntegerQuery(schema, table, column)
         cur = self.conn.cursor()
 
         self.execute(cur, sql)
@@ -123,8 +123,8 @@ class DAO(object):
 
     #################################################################
 
-    def castColumnToDate(self, schema: str, tableName: str, column: str, format: str):
-        sql = getCastColumnToDateQuery(schema, tableName, column, format)
+    def castColumnToDate(self, schema: str, table: str, column: str, format: str):
+        sql = getCastColumnToDateQuery(schema, table, column, format)
         cur = self.conn.cursor()
 
         self.execute(cur, sql)
