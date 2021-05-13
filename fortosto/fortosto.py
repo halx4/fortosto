@@ -42,6 +42,7 @@ class Fortosto:
                  castNumbers: bool,
                  target: str,
                  table: str,
+                 appendMode: bool
                  ):
         self.conn = conn
         self.schema = schema
@@ -53,6 +54,7 @@ class Fortosto:
         self.castNumbers = castNumbers
         self.target = target
         self.table = table
+        self.appendMode = appendMode
 
         self.dao = DAO.fromConnection(self.conn, developmentMode=Properties.developmentMode)
 
@@ -121,11 +123,13 @@ class Fortosto:
         newHeaders = TableNormalizer.normalizeHeaders(headers)
         log.debug(f"normalised headers: {newHeaders}")
 
-        if self.dropTableIfExists:
-            log.debug(f"dropping table: {target.table}")
-            self.dao.dropTable(self.schema, target.table)
+        if not self.appendMode:
+            if self.dropTableIfExists:
+                log.debug(f"dropping table: {target.table}")
+                self.dao.dropTable(self.schema, target.table)
 
-        self.dao.createVarCharTable(self.schema, target.table, newHeaders, self.primaryKey)
+            self.dao.createVarCharTable(self.schema, target.table, newHeaders, self.primaryKey)
+
 
         self.importToDbTable(target, headers, newHeaders, fileType)
 

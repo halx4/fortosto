@@ -30,6 +30,7 @@ def initialize() -> InitializationResult:
 
     parser.add_argument('--filename-pattern', type=str, help="Glob-style lookup pattern.\n Ignored when the target is file.", default=os.environ.get("FST_FILENAME_PATTERN", "*.*"), required=False)
     parser.add_argument('-die', '--drop-if-exists', help="drop table if it already exists", action='store_true', required=False)
+    parser.add_argument('--append', help="append to an existing table and do not create new one", action='store_true', required=False)
     parser.add_argument('--cast-numbers', help="try casting number columns after importing", action='store_true', required=False)
     parser.add_argument('--verbose', help="verbose logging", action='store_true', required=False)
 
@@ -60,6 +61,8 @@ def initialize() -> InitializationResult:
     result.filenamePattern = args.filename_pattern
     result.dropTableIfExists = args.drop_if_exists
     result.castNumbers = args.cast_numbers
+    result.appendMode = args.append
+
     result.verboseLogging = args.verbose
 
     log.debug(f"""

@@ -30,7 +30,7 @@ fortosto [-h] -f TARGET [-H HOST] [-P PORT] [-u USERNAME] [-p PASSWORD]
                [-d DATABASE] [-s SCHEMA] [-t TABLE] [-D DELIMITER]
                [-tp TABLE_PREFIX] [-pk PRIMARY_KEY]
                [--filename-pattern FILENAME_PATTERN] [--drop-if-exists]
-               [--cast-numbers] [--verbose] [-v]
+               [--append] [--cast-numbers] [--verbose] [-v]
 
 
   -f TARGET, --target TARGET
@@ -88,6 +88,10 @@ fortosto [-h] -f TARGET [-H HOST] [-P PORT] [-u USERNAME] [-p PASSWORD]
 
   --cast-numbers        
 #               try casting number columns after importing 
+#               (default: False)
+
+  --append        
+#               append data to an existing table and skip creating a new one 
 #               (default: False)
 
   --verbose             

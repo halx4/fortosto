@@ -34,7 +34,8 @@ class Standalone:
             dropTableIfExists=initResult.dropTableIfExists,
             castNumbers=initResult.castNumbers,
             target=initResult.target,
-            table=initResult.table
+            table=initResult.table,
+            appendMode=initResult.appendMode
         )
 
         return core.fortosto()

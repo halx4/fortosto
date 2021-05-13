@@ -17,6 +17,7 @@ class InitializationResult:
     filenamePattern: Optional[str] = None
     dropTableIfExists: bool = False
     castNumbers: bool = False
+    appendMode: bool = False
 
     target: Optional[str] = None
     table: Optional[str] = None
