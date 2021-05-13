@@ -44,6 +44,7 @@ class TestLoadJson(unittest.TestCase):
             castNumbers=True,
             target='./testData/jsonl-9MB-1.jsonl',
             table=table,
+            appendMode=False
         )
         engine.fortosto()
 
@@ -74,6 +75,7 @@ class TestLoadJson(unittest.TestCase):
             castNumbers=True,
             target='./testData/jsonl-9MB-1.jsonl',
             table=table,
+            appendMode=False
         )
         engine.fortosto()
 

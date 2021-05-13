@@ -44,6 +44,7 @@ class TestLoadCsv(unittest.TestCase):
             castNumbers=True,
             target='./testData/csv-2MB-1.csv',
             table=table,
+            appendMode=False
         )
         engine.fortosto()
 
@@ -74,6 +75,7 @@ class TestLoadCsv(unittest.TestCase):
             castNumbers=True,
             target='./testData/csv-2MB-1.csv',
             table=table,
+            appendMode=False
         )
         engine.fortosto()
 
