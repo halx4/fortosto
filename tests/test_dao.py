@@ -21,11 +21,11 @@ class TestDao(unittest.TestCase):
     def test_columnInfoWithoutId(self):
         table = "columnInfo"
 
-        self.dao.dropTable(schema=TestConfigurationProvider.schema, tableName=table)
-        self.dao.createVarCharTable(schema=TestConfigurationProvider.schema, tableName=table,
+        self.dao.dropTable(schema=TestConfigurationProvider.schema, table=table)
+        self.dao.createVarCharTable(schema=TestConfigurationProvider.schema, table=table,
                                     columns=['c1', 'c2'])
 
-        result = self.dao.getColumnsInfoOfTable(schema=TestConfigurationProvider.schema, tableName=table)
+        result = self.dao.getColumnsInfoOfTable(schema=TestConfigurationProvider.schema, table=table)
 
         c1Info = next(item for item in result if item["column_name"] == "c1")
         self.assertEqual(c1Info['data_type'], 'character varying')
@@ -36,12 +36,12 @@ class TestDao(unittest.TestCase):
     def test_columnInfoWithId(self):
         table = "columnInfo"
 
-        self.dao.dropTable(schema=TestConfigurationProvider.schema, tableName=table)
-        self.dao.createVarCharTable(schema=TestConfigurationProvider.schema, tableName=table,
+        self.dao.dropTable(schema=TestConfigurationProvider.schema, table=table)
+        self.dao.createVarCharTable(schema=TestConfigurationProvider.schema, table=table,
                                     columns=['c1', 'c2'],
                                     idColumn='id')
 
-        result = self.dao.getColumnsInfoOfTable(schema=TestConfigurationProvider.schema, tableName=table)
+        result = self.dao.getColumnsInfoOfTable(schema=TestConfigurationProvider.schema, table=table)
 
         idInfo = next(item for item in result if item["column_name"] == "id")
         self.assertEqual(idInfo['data_type'], 'integer')
@@ -58,20 +58,20 @@ class TestDao(unittest.TestCase):
     def test_count(self):
         table = "test_count"
 
-        self.dao.dropTable(schema=TestConfigurationProvider.schema, tableName=table)
+        self.dao.dropTable(schema=TestConfigurationProvider.schema, table=table)
 
-        # exists = self.dao.tableExists(schema=TestConfigurationProvider.schema, tableName=table)
+        # exists = self.dao.tableExists(schema=TestConfigurationProvider.schema, table=table)
         # self.assertFalse(exists)
 
         # create empty table
-        self.dao.createVarCharTable(schema=TestConfigurationProvider.schema, tableName=table,
+        self.dao.createVarCharTable(schema=TestConfigurationProvider.schema, table=table,
                                     columns=['c1', 'c2'])
-        exists = self.dao.tableExists(schema=TestConfigurationProvider.schema, tableName=table)
+        exists = self.dao.tableExists(schema=TestConfigurationProvider.schema, table=table)
         self.assertTrue(exists)
 
         count = self.dao.getRecordCountOfTable(
             schema=TestConfigurationProvider.schema,
-            tableName=table)
+            table=table)
         self.assertEqual(count, 0)
 
         # populate the table with some records
@@ -83,13 +83,13 @@ class TestDao(unittest.TestCase):
 
         count = self.dao.getRecordCountOfTable(
             schema=TestConfigurationProvider.schema,
-            tableName=table)
+            table=table)
         self.assertEqual(count, 3)
 
         # drop the table
-        self.dao.dropTable(schema=TestConfigurationProvider.schema, tableName=table)
+        self.dao.dropTable(schema=TestConfigurationProvider.schema, table=table)
 
-        exists = self.dao.tableExists(schema=TestConfigurationProvider.schema, tableName=table)
+        exists = self.dao.tableExists(schema=TestConfigurationProvider.schema, table=table)
         self.assertFalse(exists)
 
 

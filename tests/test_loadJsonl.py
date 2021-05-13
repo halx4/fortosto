@@ -29,8 +29,8 @@ class TestLoadJson(unittest.TestCase):
         table = "test_load_jsonl"
         
         print(f"dropping test table: {table}")
-        self.dao.dropTable(schema=TestConfigurationProvider.schema, tableName=table)
-        exists = self.dao.tableExists(schema=TestConfigurationProvider.schema, tableName=table)
+        self.dao.dropTable(schema=TestConfigurationProvider.schema, table=table)
+        exists = self.dao.tableExists(schema=TestConfigurationProvider.schema, table=table)
         self.assertFalse(exists)
 
         engine = Fortosto(
@@ -48,10 +48,10 @@ class TestLoadJson(unittest.TestCase):
         )
         engine.fortosto()
 
-        count = self.dao.getRecordCountOfTable(schema=TestConfigurationProvider.schema, tableName=table)
+        count = self.dao.getRecordCountOfTable(schema=TestConfigurationProvider.schema, table=table)
         self.assertEqual(count, 33321)
 
-        columnsInfo = self.dao.getColumnsInfoOfTable(schema=TestConfigurationProvider.schema, tableName=table)
+        columnsInfo = self.dao.getColumnsInfoOfTable(schema=TestConfigurationProvider.schema, table=table)
         firstdoseInfo = next(item for item in columnsInfo if item["column_name"] == "firstdose")
         self.assertEqual(firstdoseInfo['data_type'], 'integer')
 
@@ -62,7 +62,7 @@ class TestLoadJson(unittest.TestCase):
         table = "test_load_jsonl_with_id"
 
         print(f"dropping test table: {table}")
-        self.dao.dropTable(schema=TestConfigurationProvider.schema, tableName=table)
+        self.dao.dropTable(schema=TestConfigurationProvider.schema, table=table)
 
         engine = Fortosto(
             conn=self.fortostoConn,
@@ -79,10 +79,10 @@ class TestLoadJson(unittest.TestCase):
         )
         engine.fortosto()
 
-        count = self.dao.getRecordCountOfTable(schema=TestConfigurationProvider.schema, tableName=table)
+        count = self.dao.getRecordCountOfTable(schema=TestConfigurationProvider.schema, table=table)
         self.assertEqual(count, 33321)
 
-        columnsInfo = self.dao.getColumnsInfoOfTable(schema=TestConfigurationProvider.schema, tableName=table)
+        columnsInfo = self.dao.getColumnsInfoOfTable(schema=TestConfigurationProvider.schema, table=table)
 
         idInfo = next(item for item in columnsInfo if item["column_name"] == "id")
         self.assertEqual(idInfo['data_type'], 'integer')

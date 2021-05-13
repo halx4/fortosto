@@ -66,13 +66,13 @@ class DAO(object):
 
     #################################################################
 
-    def getColumnsInfoOfTable(self, schema: str, tableName: str) -> List[dict]:
+    def getColumnsInfoOfTable(self, schema: str, table: str) -> List[dict]:
         cur = self.conn.cursor()
         self.execute(cur, f"""SELECT 
 	column_name,ordinal_position,column_default,is_nullable,data_type,is_identity
  FROM information_schema.columns 
  WHERE table_schema = '{schema}' 
- AND table_name   = '{tableName}';""")
+ AND table_name   = '{table}';""")
         self.conn.commit()
         rawResult = cur.fetchall()
         result = [
@@ -95,10 +95,10 @@ class DAO(object):
 
     #################################################################
 
-    def tableExists(self, schema: str, tableName: str):
+    def tableExists(self, schema: str, table: str):
         cur = self.conn.cursor()
         self.execute(cur,
-                     f"SELECT EXISTS(SELECT FROM information_schema.tables WHERE table_schema = '{schema}' AND table_name = '{tableName}');")
+                     f"SELECT EXISTS(SELECT FROM information_schema.tables WHERE table_schema = '{schema}' AND table_name = '{table}');")
         self.conn.commit()
         (result,) = cur.fetchone()
         return result
@@ -132,16 +132,16 @@ class DAO(object):
 
     #################################################################
 
-    def createVarCharTable(self, schema: str, tableName: str, columns: List[str], idColumn: str = None):
-        sql = getCreateTableQuery(schema, tableName, columns, idColumn)
+    def createVarCharTable(self, schema: str, table: str, columns: List[str], idColumn: str = None):
+        sql = getCreateTableQuery(schema, table, columns, idColumn)
         cur = self.conn.cursor()
         self.execute(cur, sql)
         self.conn.commit()
 
     #################################################################
 
-    def dropTable(self, schema: str, tableName: str):
-        sql = getDropTableQuery(schema, tableName, ifExists=True)
+    def dropTable(self, schema: str, table: str):
+        sql = getDropTableQuery(schema, table, ifExists=True)
         cur = self.conn.cursor()
         self.execute(cur, sql)
         self.conn.commit()
@@ -156,9 +156,9 @@ class DAO(object):
 
     #################################################################
 
-    def getRecordCountOfTable(self, schema: str, tableName: str):
+    def getRecordCountOfTable(self, schema: str, table: str):
         cur = self.conn.cursor()
-        self.execute(cur, f'SELECT count(*) FROM "{schema}"."{tableName}";')
+        self.execute(cur, f'SELECT count(*) FROM "{schema}"."{table}";')
         self.conn.commit()
         rawResult = cur.fetchone()
         result = rawResult[0]
@@ -173,7 +173,7 @@ class DAO(object):
     #################################################################
 
     # PRIVATE METHODS
-    def insertValues(self, schema, tableName, records: List[dict]):
+    def insertValues(self, schema, table, records: List[dict]):
         """raises UnableToSaveException
         """
 
@@ -195,7 +195,7 @@ class DAO(object):
                 values = tuple([t[1] for t in l])
                 recordsAsTuplesList.append(values)
 
-            insert = f'insert into "{schema}"."{tableName}" ({columns}) values %s'
+            insert = f'insert into "{schema}"."{table}" ({columns}) values %s'
 
             cur = self.conn.cursor()
 
@@ -203,7 +203,7 @@ class DAO(object):
 
             self.conn.commit()
 
-    def insertValuesOnConflictUpdate(self, schema: str, tableName: str, recordsAsList):
+    def insertValuesOnConflictUpdate(self, schema: str, table: str, recordsAsList):
         """raises UnableToSaveException
         """
 
@@ -226,7 +226,7 @@ class DAO(object):
                 recordsAsTuplesList.append(values)
 
             updateQueryPart = ','.join([t[0] + "=excluded." + t[0] for t in l])
-            insert = f'insert into "{schema}"."{tableName}" ({columns}) values %s on conflict (id) do update set {updateQueryPart}'
+            insert = f'insert into "{schema}"."{table}" ({columns}) values %s on conflict (id) do update set {updateQueryPart}'
 
             cur = self.conn.cursor()
             self.executeValues(cur, insert, recordsAsTuplesList)
